@@ -20,7 +20,7 @@ const Footer = () => {
                         </svg>
                         <span class="ml-3 text-xl">Playlist Transfer App</span>
                     </a>
-                    <p class="text-sm text-gray-400 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-800 sm:py-2 sm:mt-0 mt-4">
+                    {/* <p class="text-sm text-gray-400 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-800 sm:py-2 sm:mt-0 mt-4">
                         using Tailblocks by
                         <a
                             href="https://twitter.com/knyttneve"
@@ -30,7 +30,7 @@ const Footer = () => {
                         >
                             @knyttneve
                         </a>
-                    </p>
+                    </p> */}
                     <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
                         <a
                             class="text-gray-400"
