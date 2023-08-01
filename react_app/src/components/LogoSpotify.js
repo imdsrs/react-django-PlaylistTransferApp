@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { ReactComponent as SpotifyLogo } from "../assets/spotifyLogo.svg";
 
 const LogoSpotify = () => {

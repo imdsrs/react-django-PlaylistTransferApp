@@ -1,11 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
     return (
         <div>
             <footer class="text-gray-400 bg-gray-900 body-font">
                 <div class="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
-                    <a class="flex title-font font-medium items-center md:justify-start justify-center text-white">
+                    <Link
+                        to="/"
+                        class="flex title-font font-medium items-center md:justify-start justify-center text-white"
+                    >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -19,7 +23,7 @@ const Footer = () => {
                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
                         </svg>
                         <span class="ml-3 text-xl">Playlist Transfer App</span>
-                    </a>
+                    </Link>
                     {/* <p class="text-sm text-gray-400 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-800 sm:py-2 sm:mt-0 mt-4">
                         using Tailblocks by
                         <a

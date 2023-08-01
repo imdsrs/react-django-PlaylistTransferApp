@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { ReactComponent as YoutubeMusicLogo } from "../assets/youtubeMusicLogo.svg";
 
 const LogoYoutubeMusic = () => {

@@ -45,7 +45,7 @@ const LoginAppleMusic = () => {
                     </button>
                     <a
                         class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker"
-                        href="#"
+                        href="/"
                     >
                         Forgot Password?
                     </a>
