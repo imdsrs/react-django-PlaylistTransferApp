@@ -1,7 +1,7 @@
-from django.contrib import admin
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.getRoutes, name="routes"),
+    # path('google/', GoogleSocialAuthView.as_view()),
+    # path('', views.getRoutes, name="routes"),
 ]

@@ -8,6 +8,9 @@ import LoginSpotify from "./components/LoginSpotify";
 import LoginAppleMusic from "./components/LoginAppleMusic";
 import LoginDeezer from "./components/LoginDeezer";
 import LoginYoutubeMusic from "./components/LoginYoutubeMusic";
+import GoogleSocialAuth from "./pages/GoogleSocialAuth";
+// import LoginTryGoogle from "./views/login";
+import GoogleAuth from "./pages/GoogleAuth";
 
 function App() {
     return (
@@ -20,7 +23,10 @@ function App() {
                     <Route path="/SpotifyLogin" element={<LoginSpotify />} />
                     <Route
                         path="/YoutubeMusicLogin"
+                        // element={<GoogleSocialAuth />}
                         element={<LoginYoutubeMusic />}
+                        // element={<LoginTryGoogle />}
+                        // element={<GoogleAuth />}
                     />
                     <Route
                         path="/AppleMusicLogin"

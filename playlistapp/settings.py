@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+SITE_ID = 2
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,8 +40,32 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api.django_app.apps.DjangoAppConfig',
+    #django rest framework
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    # 'rest_auth.registration',
+     #cors headers
+    'corsheaders',
+     #for social login
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount' ,
+    'allauth.socialaccount.providers.google',
+    'rest_auth.registration',
+    'allauth.socialaccount.providers.facebook',
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email"
+        ],
+        "AUTH_PARAMS": {"access_type": "online"}
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,6 +75,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'playlistapp.urls'
@@ -56,7 +83,7 @@ ROOT_URLCONF = 'playlistapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "react_app/build"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,7 +146,23 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [BASE_DIR / "react_app/build/static"]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend" ,
+    "allauth.account.auth_backends.AuthenticationBackend"
+)
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+GOOGLE_CLIENT_ID = "515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com"
+SOCIAL_SECRET = "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"
+
+AUTH_USER_MODEL = "django_app.User"

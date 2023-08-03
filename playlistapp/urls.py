@@ -16,8 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
+
+from api.django_app.views import GoogleLogin
+
+# from playlistapp.api.django_app.views import GoogleLogin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", include("api.django_app.urls")),
+    path('accounts/', include("allauth.urls")),
+    path("", TemplateView.as_view(template_name="index.html")),
+    path('hello/', include("api.django_app.urls")),
+    path('rest-auth/google/', GoogleLogin, name='google_login')
 ]
