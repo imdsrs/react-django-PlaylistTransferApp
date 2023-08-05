@@ -164,5 +164,3 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 GOOGLE_CLIENT_ID = "515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com"
 SOCIAL_SECRET = "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"
-
-AUTH_USER_MODEL = "django_app.User"
