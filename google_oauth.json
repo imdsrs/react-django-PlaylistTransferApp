@@ -1,0 +1,20 @@
+{
+    "web": {
+        "client_id": "515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com",
+        "project_id": "playlist-transfer-app",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "http://localhost",
+            "http://localhost:3000",
+            "http://localhost:8000"
+        ],
+        "javascript_origins": [
+            "http://localhost",
+            "http://localhost:3000",
+            "http://localhost:8000"
+        ]
+    }
+}

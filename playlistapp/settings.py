@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'api.django_app',
+    # 'django_app',
     'api.django_app.apps.DjangoAppConfig',
     #django rest framework
     'rest_framework',
@@ -55,6 +57,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'rest_auth.registration',
     'allauth.socialaccount.providers.facebook',
+    'django_filters',
+    'googleapiclient',
+    'google_auth_oauthlib',
+    'google_auth_httplib2',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -164,3 +170,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 GOOGLE_CLIENT_ID = "515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com"
 SOCIAL_SECRET = "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"
+
+AUTH_USER_MODEL = "django_app.BaseUser"
+
+CORS_ALLOW_ALL_ORIGINS = True

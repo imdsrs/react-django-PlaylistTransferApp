@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./Login.css";
+import { ReactComponent as InfoButton } from "../../assets/info.svg";
 
-export default function SpotifyLogin() {
+export default function TryModal() {
     const [modal, setModal] = useState(false);
 
     const toggleModal = () => {
@@ -17,14 +18,17 @@ export default function SpotifyLogin() {
     return (
         <>
             <button onClick={toggleModal} className="btn-modal">
-                Open
+                <InfoButton />
             </button>
 
             {modal && (
                 <div className="modal">
                     <div onClick={toggleModal} className="overlay"></div>
                     <div className="modal-content">
-                        <h2>Hello Modal</h2>
+                        <h2>Information: </h2>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicin</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicin</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicin</p>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicin</p>
                         <button className="close-modal" onClick={toggleModal}>
                             CLOSE

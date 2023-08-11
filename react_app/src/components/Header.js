@@ -2,6 +2,7 @@ import LogoAppleMusic from "./LogoAppleMusic";
 import LogoDeezer from "./LogoDeezer";
 import LogoSpotify from "./LogoSpotify";
 import LogoYoutubeMusic from "./LogoYoutubeMusic";
+import TryModal from "./modal/TryModal";
 import { ReactComponent as InfoButton } from "../assets/info.svg";
 import { Link } from "react-router-dom";
 
@@ -65,7 +66,8 @@ const Header = () => {
                             <path d="M5 12h14M12 5l7 7-7 7"></path>
                         </svg>
                     </button> */}
-                    <InfoButton />
+                    {/* <InfoButton /> */}
+                    <TryModal />
                 </div>
             </header>
         </div>
