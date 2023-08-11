@@ -6,7 +6,7 @@ import "../App.css";
 import axios from "axios";
 
 const handleCallbackResponse = async (response) => {
-    console.log("hello::", response);
+    // console.log("hello::", response);
     let res = await axios.post(
         "http://127.0.0.1:8000/hello/rest-auth/google/",
         {
@@ -58,9 +58,10 @@ const LoginYoutubeMusic = () => {
                 client_id={
                     "515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com"
                 }
-                scope="openid profile email"
+                scope="https://www.googleapis.com/auth/youtube.readonly"
                 discoveryDocs="claims_supported"
                 access_type="offline"
+                typeResponse="accessToken"
                 onResolve={({ provider, data }) => {
                     console.log(provider, data);
                     // console.log(handleCallbackResponse(data));

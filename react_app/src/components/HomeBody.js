@@ -3,6 +3,7 @@ import { ReactComponent as SpotifyLogo } from "../assets/spotifyLogo.svg";
 import { ReactComponent as YoutubeMusicLogo } from "../assets/youtubeMusicLogo.svg";
 import { ReactComponent as AppleMusicLogo } from "../assets/appleMusicLogo.svg";
 import { ReactComponent as DeezerLogo } from "../assets/deezerLogo.svg";
+import { Link } from "react-router-dom";
 
 // const testCSS = {
 //     vertical-align: "bottom"
@@ -104,8 +105,8 @@ const HomeBody = () => {
                                     <h2 class="text-white title-font font-medium">
                                         Spotify to Deezer
                                     </h2>
-                                    <a
-                                        href="test"
+                                    <Link
+                                        to="ListSpotifyPlaylists/toDeezer"
                                         class="text-indigo-400 inline-flex items-center"
                                     >
                                         Transfer
@@ -121,7 +122,7 @@ const HomeBody = () => {
                                             <path d="M5 12h14"></path>
                                             <path d="M12 5l7 7-7 7"></path>
                                         </svg>
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
