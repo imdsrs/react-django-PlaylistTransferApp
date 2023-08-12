@@ -22,14 +22,11 @@ const DeezerSuccess = () => {
     const PROFILE_ENDPOINT = "https://api.spotify.com/v1/me";
 
     const hearderValues = {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "access-control-allow-credentials": true,
-        "access-control-allow-methods": "*",
-        "access-control-allow-origin": "*",
-        "access-control-allow-headers": "*",
-        "cache-control": "no-cache",
-        "cors-enabled": false,
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers":
+            "X-Requested-With, Content-Type, Authorization, Origin, Accept, Accept-Encoding",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+        "Content-Type": "text/javascript; charset=utf-8",
     };
 
     const getAccessToken = async (code) => {

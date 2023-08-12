@@ -29,6 +29,8 @@ import DeezerSuccess from "./components/DeezerSuccess";
 import ListSpotifyPlaylists from "./components/ListSpotifyPlaylists";
 import TransferFromSpotify from "./components/TransferFromSpotify";
 import React, { useEffect } from "react";
+import ListDeezerPlaylists from "./components/ListDeezerPlaylists";
+import TransferFromDeezer from "./components/TransferFromDeezer";
 
 function App() {
     const handleSpotifyLogin = () => {
@@ -77,6 +79,7 @@ function App() {
                         }
                     />
                     <Route path="/DeezerSuccess" element={<DeezerSuccess />} />
+                    {/* Components for Transferring Items from Spotify to Deezer */}
                     <Route
                         path="/ListSpotifyPlaylists/:destinationValue"
                         element={<ListSpotifyPlaylists />}
@@ -84,6 +87,15 @@ function App() {
                     <Route
                         path="/TransferFromSpotify/:destinationValue/:playlistId"
                         element={<TransferFromSpotify />}
+                    />
+                    {/* Components for Transferring Items from Deezer to Spotify */}
+                    <Route
+                        path="/ListDeezerPlaylists/:destinationValue"
+                        element={<ListDeezerPlaylists />}
+                    />
+                    <Route
+                        path="/TransferFromDeezer/:destinationValue/:playlistId"
+                        element={<TransferFromDeezer />}
                     />
                 </Routes>
                 <Footer />

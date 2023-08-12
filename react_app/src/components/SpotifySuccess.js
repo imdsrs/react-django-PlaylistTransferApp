@@ -123,7 +123,7 @@ const SpotifySuccess = () => {
                         />
                     </div>
                 )}
-            {tracks.items && (
+            {/* {tracks.items && (
                 <div className="list">
                     <h1>Your top tracks</h1>
                     <div
@@ -153,7 +153,7 @@ const SpotifySuccess = () => {
                         })}
                     </div>
                 </div>
-            )}
+            )} */}
             {console.log("playlists", playlists)}
             {playlists.items && (
                 <div className="playlists mt-10">
@@ -167,13 +167,17 @@ const SpotifySuccess = () => {
                                         className="playlists w-full text-center"
                                     >
                                         <span className="flex items-center justify-center">
-                                            <img
-                                                src={playlists.images[0].url}
-                                                alt="profile"
-                                                // height="5%"
-                                                // width="5%"
-                                                className="w-[5%] h-[5%] rounded-3xl"
-                                            />{" "}
+                                            {playlists.images[0] && (
+                                                <img
+                                                    src={
+                                                        playlists.images[0].url
+                                                    }
+                                                    alt="profile"
+                                                    // height="5%"
+                                                    // width="5%"
+                                                    className="w-[5%] h-[5%] rounded-3xl"
+                                                />
+                                            )}{" "}
                                             &nbsp;&nbsp;
                                             <span className="text-lg">
                                                 {playlists.name} by{" "}

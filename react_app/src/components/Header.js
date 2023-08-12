@@ -36,7 +36,6 @@ const Header = () => {
                         <Link to="/SpotifyLogin" className="floating-button">
                             <LogoSpotify />
                         </Link>
-
                         <Link
                             to="/YoutubeMusicLogin"
                             className="floating-button"
@@ -44,6 +43,7 @@ const Header = () => {
                             <LogoYoutubeMusic />
                         </Link>
 
+                        {/* Apple Music section is disbaled */}
                         <Link to="/AppleMusicLogin" className="floating-button">
                             <LogoAppleMusic />
                         </Link>

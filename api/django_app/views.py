@@ -22,6 +22,7 @@ import googleapiclient.errors
 import requests
 import json
 import time
+import datetime
 
 
 # @permission_classes((AllowAny, ))
@@ -88,7 +89,7 @@ def getRoutes(request, destinationValue, playlistId, accessTokenSpotify, accessT
     DeezerURLISCRFetch = "https://api.deezer.com/track/isrc:"
     while ISCRCounter < len(SpotifyISCRValue):
         if (ISCRCounter % 40 == 0 & ISCRCounter>0):
-            time.sleep(300)
+            time.sleep(5)
         print(SpotifyISCRValue[ISCRCounter])
         print(DeezerURLISCRFetch+SpotifyISCRValue[ISCRCounter])
         DeezerISCRResponse = requests.request(
@@ -122,6 +123,112 @@ def getRoutes(request, destinationValue, playlistId, accessTokenSpotify, accessT
     
     return Response("hello")
 
+
+@api_view(["GET"])
+def getDataFromDeezer(request, destinationValue, playlistId, accessTokendeezer, accessTokenDestination):
+    print("request::", request)
+    print("destinationValue::", destinationValue)
+    print("playlistId::", playlistId)
+    print("accessTokendeezer::", accessTokendeezer)
+    print("accessTokenDestination::", accessTokenDestination)
+
+    Spotifyheaders = {
+        'Authorization': 'Bearer ' + accessTokenDestination
+    }
+
+    DeezerHeaders = {
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization, Origin, Accept, Accept-Encoding',
+        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT',
+        'Content-Type': 'text/javascript; charset=utf-8'
+    }
+
+    DeezerURLPlaylist = "https://api.deezer.com/playlist/"+ playlistId + "/tracks?output=json&access_token="+accessTokendeezer
+
+    DeezerPlaylistResponse = requests.request(
+        "GET", DeezerURLPlaylist, headers=DeezerHeaders)
+    # print(DeezerPlaylistResponse.text)
+
+    DeezerTrackIDValue = []
+    for item in DeezerPlaylistResponse.json()['data']:
+        DeezerTrackIDValue.append(item['id'])
+    print(DeezerTrackIDValue)
+    
+    DeezerTrackFetchURL = "https://api.deezer.com/track/"
+    DeezerISRCValue = []
+    ISCRCounter = 0
+    while ISCRCounter < len(DeezerTrackIDValue):
+        if (ISCRCounter % 40 == 0 & ISCRCounter > 0):
+            time.sleep(5)
+        DeezerTrackValueResponse = requests.request(
+            "GET", DeezerTrackFetchURL+str(DeezerTrackIDValue[ISCRCounter]), headers=DeezerHeaders)
+        # print(DeezerTrackValueResponse.text)
+        # DeezerISRCValue.append(DeezerTrackValueResponse.json()['isrc'])
+        if (DeezerTrackValueResponse.status_code == 200):
+            DeezerISRCValue.append(DeezerTrackValueResponse.json()['isrc'])
+            print("no error")
+        else:
+            print("error::" + DeezerTrackValueResponse.json()['error'])
+        ISCRCounter += 1
+    print(DeezerISRCValue)
+
+    SpotifyTrackURL = "https://api.spotify.com/v1/search?type=track&q=isrc:" #GBAHS2200261&offset=0&limit=1
+    SpotifyTrackURIValue = []
+    SpotifyTrackCounter = 0
+    while SpotifyTrackCounter < len(DeezerISRCValue):
+        if (SpotifyTrackCounter % 40 == 0 & SpotifyTrackCounter > 0):
+            time.sleep(5)
+        SpotifyTrackValueResponse = requests.request(
+            "GET", SpotifyTrackURL+str(DeezerISRCValue[SpotifyTrackCounter]), headers=Spotifyheaders)
+        if (SpotifyTrackValueResponse.json()['tracks']['total'] != 0):
+            SpotifyTrackURIValue.append(
+                SpotifyTrackValueResponse.json()['tracks']['items'][0]['uri'])
+            print("no error")
+        else:
+            print("error:: no value found for ISCR: " +
+                  DeezerISRCValue[SpotifyTrackCounter])
+        SpotifyTrackCounter += 1
+    
+    print(SpotifyTrackURIValue)
+
+    SpotifyUserURL = "https://api.spotify.com/v1/me"
+    SpotifyUserResponse = requests.request(
+        "GET", SpotifyUserURL, headers=Spotifyheaders)
+    SpotifyUserId = SpotifyUserResponse.json()['id']
+    print(SpotifyUserId)
+
+    timeNow = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+
+    SpotifyCreatePlaylistBody = json.dumps({
+        "name": "Deezer To Spotify " + timeNow,
+        "description": "New playlist description",
+        "public": "false"
+        })
+
+    SpotifyCreatePlaylistURL = "https://api.spotify.com/v1/users/"+ SpotifyUserId +"/playlists"
+    SpotifyCreatePlaylistResponse = requests.request(
+        "POST", SpotifyCreatePlaylistURL, headers=Spotifyheaders, data=SpotifyCreatePlaylistBody)
+    print(SpotifyCreatePlaylistResponse.json())
+    SpotifyNewPlaylistId = SpotifyCreatePlaylistResponse.json()['id']
+    print(SpotifyNewPlaylistId)
+
+    SpotifyTrackURIString = ",".join(str(valueInList)
+                                     for valueInList in SpotifyTrackURIValue)
+    # SpotifyTrackURIString = "%27" + SpotifyTrackURIString + "%27"
+    print("SpotifyTrackURIString:::"+SpotifyTrackURIString)
+
+    SpotifyAddItemToPlaylistBody = json.dumps({
+        "uris": SpotifyTrackURIString,
+    })
+
+    SpotifyAddItemToPlaylistURL = "https://api.spotify.com/v1/playlists/" + SpotifyNewPlaylistId + "/tracks?uris="+SpotifyTrackURIString
+    SpotifyAddItemToPlaylistResponse = requests.request(
+        "POST", SpotifyAddItemToPlaylistURL, headers=Spotifyheaders)#, data=SpotifyAddItemToPlaylistBody)
+    
+    print(SpotifyAddItemToPlaylistResponse.text)
+
+
+    return Response("hello")
 
 @api_view(["POST"])
 def GoogleLogin(request):
