@@ -71,13 +71,10 @@ const HomeBody = () => {
                                     <AppleMusicLogo />
                                 </span>
                                 <div class="flex-grow">
-                                    <h2 class="text-white title-font font-medium">
+                                    <h2 class="text-black title-font font-medium">
                                         Spotify to Apple Music
                                     </h2>
-                                    <a
-                                        href="test"
-                                        class="text-indigo-400 inline-flex items-center"
-                                    >
+                                    <a class="text-black inline-flex items-center">
                                         Transfer
                                         <svg
                                             class="w-4 h-4 ml-2"
@@ -164,13 +161,10 @@ const HomeBody = () => {
                                     <AppleMusicLogo />
                                 </span>
                                 <div class="flex-grow">
-                                    <h2 class="text-white title-font font-medium">
+                                    <h2 class="text-black title-font font-medium">
                                         Youtube Music to Apple Music
                                     </h2>
-                                    <a
-                                        href="test"
-                                        class="text-indigo-400 inline-flex items-center"
-                                    >
+                                    <a class="text-black inline-flex items-center">
                                         Transfer
                                         <svg
                                             class="w-4 h-4 ml-2"
@@ -219,20 +213,20 @@ const HomeBody = () => {
                                 </div>
                             </div>
                         </div>
-                        <div class="p-2 lg:w-1/3 md:w-1/2 w-full">
+
+                        {/* Apple Music section is disbaled  */}
+
+                        {/* <div class="p-2 lg:w-1/3 md:w-1/2 w-full">
                             <div class="h-full flex items-center border-gray-800 border p-4 rounded-lg">
                                 <span class="flex justify-center items-center">
                                     <AppleMusicLogo /> &nbsp; &nbsp;
                                     <SpotifyLogo />
                                 </span>
                                 <div class="flex-grow">
-                                    <h2 class="text-white title-font font-medium">
+                                    <h2 class="title-font font-medium text-black">
                                         Apple Music to Spotify
                                     </h2>
-                                    <a
-                                        href="test"
-                                        class="text-indigo-400 inline-flex items-center"
-                                    >
+                                    <a class="text-black inline-flex items-center">
                                         Transfer
                                         <svg
                                             class="w-4 h-4 ml-2"
@@ -257,13 +251,10 @@ const HomeBody = () => {
                                     <YoutubeMusicLogo />
                                 </span>
                                 <div class="flex-grow">
-                                    <h2 class="text-white title-font font-medium">
+                                    <h2 class="text-black title-font font-medium">
                                         Apple Music to Youtube Music
                                     </h2>
-                                    <a
-                                        href="test"
-                                        class="text-indigo-400 inline-flex items-center"
-                                    >
+                                    <a class="text-black inline-flex items-center">
                                         Transfer
                                         <svg
                                             class="w-4 h-4 ml-2"
@@ -288,11 +279,40 @@ const HomeBody = () => {
                                     <DeezerLogo />
                                 </span>
                                 <div class="flex-grow">
-                                    <h2 class="text-white title-font font-medium">
+                                    <h2 class="text-black title-font font-medium">
                                         Apple Music to Deezer
                                     </h2>
-                                    <a
-                                        href="test"
+                                    <a class="text-black inline-flex items-center">
+                                        Transfer
+                                        <svg
+                                            class="w-4 h-4 ml-2"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            fill="none"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        >
+                                            <path d="M5 12h14"></path>
+                                            <path d="M12 5l7 7-7 7"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div> */}
+
+                        <div class="p-2 lg:w-1/3 md:w-1/2 w-full">
+                            <div class="h-full flex items-center border-gray-800 border p-4 rounded-lg">
+                                <span class="flex justify-center items-center">
+                                    <DeezerLogo /> &nbsp; &nbsp;
+                                    <SpotifyLogo />
+                                </span>
+                                <div class="flex-grow">
+                                    <h2 class="text-white title-font font-medium">
+                                        Deezer to Spotify
+                                    </h2>
+                                    <Link
+                                        to="ListDeezerPlaylists/toSpotify"
                                         class="text-indigo-400 inline-flex items-center"
                                     >
                                         Transfer
@@ -308,7 +328,7 @@ const HomeBody = () => {
                                             <path d="M5 12h14"></path>
                                             <path d="M12 5l7 7-7 7"></path>
                                         </svg>
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -319,44 +339,10 @@ const HomeBody = () => {
                                     <AppleMusicLogo />
                                 </span>
                                 <div class="flex-grow">
-                                    <h2 class="text-white title-font font-medium">
+                                    <h2 class="text-black title-font font-medium">
                                         Deezer to Apple Music
                                     </h2>
-                                    <a
-                                        href="test"
-                                        class="text-indigo-400 inline-flex items-center"
-                                    >
-                                        Transfer
-                                        <svg
-                                            class="w-4 h-4 ml-2"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            fill="none"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path d="M5 12h14"></path>
-                                            <path d="M12 5l7 7-7 7"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-2 lg:w-1/3 md:w-1/2 w-full">
-                            <div class="h-full flex items-center border-gray-800 border p-4 rounded-lg">
-                                <span class="flex justify-center items-center">
-                                    <DeezerLogo /> &nbsp; &nbsp;
-                                    <YoutubeMusicLogo />
-                                </span>
-                                <div class="flex-grow">
-                                    <h2 class="text-white title-font font-medium">
-                                        Deezer to Youtube Music
-                                    </h2>
-                                    <a
-                                        href="test"
-                                        class="text-indigo-400 inline-flex items-center"
-                                    >
+                                    <a class="text-black inline-flex items-center">
                                         Transfer
                                         <svg
                                             class="w-4 h-4 ml-2"

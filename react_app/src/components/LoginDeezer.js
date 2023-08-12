@@ -18,7 +18,7 @@ const LoginDeezer = (props) => {
                 <br />
                 <span class="">
                     <button
-                        className="bg-green-400 text-white rounded-2xl px-4 py-4"
+                        className="bg-orange-400 text-white rounded-2xl px-4 py-4"
                         onClick={() => props.handleLogin()}
                     >
                         Login with Deezer

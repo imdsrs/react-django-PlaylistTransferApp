@@ -157,7 +157,13 @@ const ListSpotifyPlaylists = () => {
                                                     : destinationValue ===
                                                       "toYoutube"
                                                     ? "Youtube Music"
-                                                    : "Apple Music"}
+                                                    : destinationValue ===
+                                                      "toSpotify"
+                                                    ? "Spotify"
+                                                    : destinationValue ===
+                                                      "toAppleMusic"
+                                                    ? "Apple Music"
+                                                    : "NO OPTION"}
                                             </Link>
                                         </span>
                                     </div>

@@ -4,6 +4,7 @@ import { LoginSocialGoogle } from "reactjs-social-login";
 import GoogleSocialAuth from "../pages/GoogleSocialAuth";
 import "../App.css";
 import axios from "axios";
+import { ReactComponent as YoutubeMusicLogo96px } from "../assets/youtubeMusicLogo_96px.svg";
 
 const handleCallbackResponse = async (response) => {
     // console.log("hello::", response);
@@ -49,43 +50,40 @@ const LoginYoutubeMusic = () => {
         });
     };
     return (
-        // <div id="signInDiv">
-        //     <h1> test </h1>
-        // </div>
-        // <div dangerouslySetInnerHTML={{ __html: myHTML }}>
-        <div>
-            <LoginSocialGoogle
-                client_id={
-                    "515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com"
-                }
-                scope="https://www.googleapis.com/auth/youtube.readonly"
-                discoveryDocs="claims_supported"
-                access_type="offline"
-                typeResponse="accessToken"
-                onResolve={({ provider, data }) => {
-                    console.log(provider, data);
-                    // console.log(handleCallbackResponse(data));
-                    handleCallbackResponseTry2(data);
-                }}
-                onReject={(err) => {
-                    console.log(err);
-                }}
-            >
-                <h2>hello</h2>
-                <div className="py-5">
-                    <GoogleLoginButton
-                        style={{ width: "calc(50%)" }}
-                        // className="test"
-                    />
+        <div class="text-gray-400 bg-gray-900 body-font h-[65vh]">
+            <br />
+            <span class="flex justify-center items-center">
+                <YoutubeMusicLogo96px />
+                <div className="text-center px-10 py-5 text-4xl">
+                    Youtube Music
                 </div>
-            </LoginSocialGoogle>
-            {/* {% load socialaccount %} */}
-            {/* {test1}
-            <h2>google login</h2>
-            <a href="{% provider_login_url 'google' %}?next=/">
-                Login with Google
-            </a> */}
-            {/* <GoogleSocialAuth /> */}
+            </span>
+            <br />
+            <br />
+            <br />
+            <span className="flex flex-col text-center items-center">
+                <LoginSocialGoogle
+                    client_id={
+                        "515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com"
+                    }
+                    scope="https://www.googleapis.com/auth/youtube.readonly"
+                    discoveryDocs="claims_supported"
+                    access_type="offline"
+                    typeResponse="accessToken"
+                    onResolve={({ provider, data }) => {
+                        console.log(provider, data);
+                        // console.log(handleCallbackResponse(data));
+                        handleCallbackResponseTry2(data);
+                    }}
+                    onReject={(err) => {
+                        console.log(err);
+                    }}
+                >
+                    <div className="py-5">
+                        <GoogleLoginButton />
+                    </div>
+                </LoginSocialGoogle>
+            </span>
         </div>
     );
 };
