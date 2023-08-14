@@ -34,8 +34,9 @@ const ListSpotifyPlaylists = () => {
     };
 
     useEffect(() => {
-        getData(PLAYLISTS_ENDPOINT, setPlaylists);
+        // alert("hello");
         getData(PROFILE_ENDPOINT, setProfile);
+        getData(PLAYLISTS_ENDPOINT, setPlaylists);
     }, []);
 
     return (
@@ -56,37 +57,7 @@ const ListSpotifyPlaylists = () => {
                         />
                     </div>
                 )}
-            {tracks.items && (
-                <div className="list">
-                    <h1>Your top tracks</h1>
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns: "auto auto auto auto",
-                        }}
-                    >
-                        {tracks.items.map((track, index) => {
-                            return (
-                                <div
-                                    key={index}
-                                    className="track"
-                                    style={{
-                                        width: "100%",
-                                        textAlign: "center",
-                                    }}
-                                >
-                                    <img
-                                        src={track.album.images[0].url}
-                                        alt="profile"
-                                    />
-                                    <h2>{track.name}</h2>
-                                    <h3>By {track.artists[0].name}</h3>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            )}
+
             {console.log("playlists", playlists)}
             {playlists.items && (
                 <div className="playlists mt-10">
@@ -100,13 +71,21 @@ const ListSpotifyPlaylists = () => {
                                         className="playlists w-full text-center"
                                     >
                                         <span className="flex items-center justify-center">
-                                            <img
-                                                src={playlists.images[0].url}
-                                                alt="profile"
-                                                // height="5%"
-                                                // width="5%"
-                                                className="w-[5%] h-[5%] rounded-3xl"
-                                            />
+                                            {playlists.images.map(
+                                                (currimage, index) => {
+                                                    return (
+                                                        index === 0 && (
+                                                            <img
+                                                                src={
+                                                                    currimage.url
+                                                                }
+                                                                alt="profile"
+                                                                className="w-[5%] h-[5%] rounded-3xl"
+                                                            />
+                                                        )
+                                                    );
+                                                }
+                                            )}
                                             &nbsp;&nbsp;
                                             <span className="text-lg">
                                                 {playlists.name} by{" "}
@@ -120,18 +99,12 @@ const ListSpotifyPlaylists = () => {
                                                         </span>
                                                     </div>
                                                 )}
-                                                {playlists.tracks.total && (
-                                                    <div className="flex justify-center items-center">
-                                                        <span className="text-xs underline">
-                                                            Tracks
-                                                            Available:&nbsp;
-                                                            {
-                                                                playlists.tracks
-                                                                    .total
-                                                            }
-                                                        </span>
-                                                    </div>
-                                                )}
+                                                <div className="flex justify-center items-center">
+                                                    <span className="text-xs underline">
+                                                        Tracks Available:&nbsp;
+                                                        {playlists.tracks.total}
+                                                    </span>
+                                                </div>
                                             </span>
                                         </span>
                                         <span>
@@ -147,24 +120,29 @@ const ListSpotifyPlaylists = () => {
                                                 Open Playlist on Spotify
                                             </a>
                                             &nbsp;&nbsp;&nbsp;
-                                            <Link
-                                                to={`/TransferFromSpotify/${destinationValue}/${playlists.id}`}
-                                                class="text-indigo-400"
-                                            >
-                                                Transfer to&nbsp;
-                                                {destinationValue === "toDeezer"
-                                                    ? "Deezer"
-                                                    : destinationValue ===
-                                                      "toYoutube"
-                                                    ? "Youtube Music"
-                                                    : destinationValue ===
-                                                      "toSpotify"
-                                                    ? "Spotify"
-                                                    : destinationValue ===
-                                                      "toAppleMusic"
-                                                    ? "Apple Music"
-                                                    : "NO OPTION"}
-                                            </Link>
+                                            {playlists.tracks.total !== 0 && (
+                                                <Link
+                                                    to={`/TransferFromSpotify/${destinationValue}/${playlists.id}`}
+                                                    class="text-indigo-400"
+                                                >
+                                                    Transfer to&nbsp;
+                                                    {destinationValue ===
+                                                    "toDeezer"
+                                                        ? "Deezer"
+                                                        : destinationValue ===
+                                                          "toYoutube"
+                                                        ? "Youtube Music"
+                                                        : destinationValue ===
+                                                          "toSpotify"
+                                                        ? "Spotify"
+                                                        : destinationValue ===
+                                                          "toAppleMusic"
+                                                        ? "Apple Music"
+                                                        : "NO OPTION"}
+                                                </Link>
+                                            )}
+                                            {playlists.tracks.total === 0 &&
+                                                "No Tracks to Transfer"}
                                         </span>
                                     </div>
                                     <br />

@@ -31,6 +31,8 @@ import TransferFromSpotify from "./components/TransferFromSpotify";
 import React, { useEffect } from "react";
 import ListDeezerPlaylists from "./components/ListDeezerPlaylists";
 import TransferFromDeezer from "./components/TransferFromDeezer";
+import ListYoutubeMusicPlaylists from "./components/ListYoutubeMusicPlaylists";
+import TransferFromYoutubeMusic from "./components/TransferFromYoutubeMusic";
 
 function App() {
     const handleSpotifyLogin = () => {
@@ -68,6 +70,10 @@ function App() {
                         // element={<GoogleAuth />}
                     />
                     <Route
+                        path="/YoutubeSuccess"
+                        element={<SpotifySuccess />}
+                    />
+                    <Route
                         path="/AppleMusicLogin"
                         element={<LoginAppleMusic />}
                     />
@@ -96,6 +102,15 @@ function App() {
                     <Route
                         path="/TransferFromDeezer/:destinationValue/:playlistId"
                         element={<TransferFromDeezer />}
+                    />
+                    {/* Components for Transferring Items from Youtube to Spotify */}
+                    <Route
+                        path="/ListYoutubeMusicPlaylists/:destinationValue"
+                        element={<ListYoutubeMusicPlaylists />}
+                    />
+                    <Route
+                        path="/TransferFromYoutubeMusic/:destinationValue/:playlistId"
+                        element={<TransferFromYoutubeMusic />}
                     />
                 </Routes>
                 <Footer />

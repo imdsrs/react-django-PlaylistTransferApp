@@ -107,12 +107,17 @@ const SpotifySuccess = () => {
     }, [playlists]);
 
     return (
-        <div class="text-gray-400 bg-gray-900 body-font">
+        <div class="text-gray-400 bg-gray-900 body-font h-[66vh]">
             {console.log("profile::", profile)}
+            {profile && (
+                <div className="justify-center items-center m-auto text-3xl text-green-400 py-8">
+                    Logged in Succesfully to Spotify
+                </div>
+            )}
             {profile.display_name &&
                 profile.images &&
                 profile.images[0].url && (
-                    <div className="flex justify-end items-end">
+                    <div className="flex justify-center items-center m-auto py-8">
                         Spotify logged in as&nbsp;
                         <br />
                         {profile.display_name}&nbsp;
@@ -154,7 +159,7 @@ const SpotifySuccess = () => {
                     </div>
                 </div>
             )} */}
-            {console.log("playlists", playlists)}
+            {/* {console.log("playlists", playlists)}
             {playlists.items && (
                 <div className="playlists mt-10">
                     <h1>Your playlists are:</h1>
@@ -215,7 +220,7 @@ const SpotifySuccess = () => {
                         })}
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

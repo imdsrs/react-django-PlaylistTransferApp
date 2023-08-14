@@ -25,23 +25,6 @@ import time
 import datetime
 
 
-# @permission_classes((AllowAny, ))
-# class GoogleSocialAuthView(GenericAPIView):
-
-#     serializer_class = GoogleSocialAuthSerializer
-
-#     def post(self, request):
-#         """
-#         POST with "auth_token"
-#         Send an idtoken as from google to get user information
-#         """
-
-#         serializer = self.serializer_class(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         data = ((serializer.validated_data)['auth_token'])
-#         return Response(data, status=status.HTTP_200_OK)
-
-
 @api_view(["GET"])
 def getRoutes(request, destinationValue, playlistId, accessTokenSpotify, accessTokenDestination):
     print("request::", request)
@@ -338,3 +321,99 @@ class GoogleLoginApi(View):
         }
 
         return JsonResponse(result, status=200)
+
+
+@api_view(["GET"])
+def getDataFromYoutubeMusic(request, destinationValue, playlistId, accessTokenYoutubeMusic, accessTokenDestination):
+    print("request::", request)
+    print("destinationValue::", destinationValue)
+    print("playlistId::", playlistId)
+    print("accessTokendeezer::", accessTokenYoutubeMusic)
+    print("accessTokenDestination::", accessTokenDestination)
+
+    YoutubeMusicHeaders = {
+        # 'Access-Control-Allow-Credentials': 'true',
+        # 'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization, Origin, Accept, Accept-Encoding',
+        # 'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT',
+        # 'Content-Type': 'text/javascript; charset=utf-8',
+        'Authorization': 'Bearer ' + accessTokenYoutubeMusic,
+        'Accept': 'application/json',
+    }
+    
+    Spotifyheaders = {
+        'Authorization': 'Bearer ' + accessTokenDestination
+    }
+
+    #step 1, get playlist items from youtube
+    YoutubeMusicURLPlaylist = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid&maxResults=50&playlistId=" + playlistId + "&key=515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com"
+    YoutubePlaylistResponse = requests.request(
+        "GET", YoutubeMusicURLPlaylist, headers=YoutubeMusicHeaders)
+    
+    # print(YoutubePlaylistResponse.json())
+
+    #step 2, get query parameters to search on Spotify
+    YoutubeMusicQueryParams = []
+    for item in YoutubePlaylistResponse.json()['items']:
+        YoutubeMusicQueryParams.append(
+            item['snippet']['title'] + " by " + item['snippet']['videoOwnerChannelTitle'])
+    print(YoutubeMusicQueryParams)
+
+    #step 3, get user's spotify ID
+    SpotifyUserURL = "https://api.spotify.com/v1/me"
+    SpotifyUserResponse = requests.request(
+        "GET", SpotifyUserURL, headers=Spotifyheaders)
+    # print(SpotifyUserResponse.text)
+    ## important, check of errros after each Get or Post call 
+    SpotifyUserId = SpotifyUserResponse.json()['id']
+    print(SpotifyUserId)
+
+    #step 4, search and grab Spotify URIs for each track 
+    SpotifyTrackURL = "https://api.spotify.com/v1/search?type=track&limit=1&q="
+    SpotifyTrackURIValue = []
+    SpotifyTrackCounter = 0
+    while SpotifyTrackCounter < len(YoutubeMusicQueryParams):
+        if (SpotifyTrackCounter % 40 == 0 & SpotifyTrackCounter > 0):
+            time.sleep(5)
+        SpotifyTrackValueResponse = requests.request(
+            "GET", SpotifyTrackURL+str(YoutubeMusicQueryParams[SpotifyTrackCounter]), headers=Spotifyheaders)
+        if (SpotifyTrackValueResponse.json()['tracks']['total'] != 0):
+            SpotifyTrackURIValue.append(
+                SpotifyTrackValueResponse.json()['tracks']['items'][0]['uri'])
+            print("no error")
+        else:
+            print("error:: no value found for Query: " +
+                  YoutubeMusicQueryParams[SpotifyTrackCounter])
+        SpotifyTrackCounter += 1
+
+    print(SpotifyTrackURIValue)
+
+    SpotifyTrackURIString = ",".join(str(valueInList)
+                                     for valueInList in SpotifyTrackURIValue)
+    
+    # step 5, create playlist on Spotify
+    timeNow = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+    SpotifyCreatePlaylistBody = json.dumps({
+        "name": "Youtube Music To Spotify " + timeNow,
+        "description": "Youtube Music To Spotify playlist description" + timeNow,
+        "public": "false"
+    })
+
+    SpotifyCreatePlaylistURL = "https://api.spotify.com/v1/users/" + \
+        SpotifyUserId + "/playlists"
+    SpotifyCreatePlaylistResponse = requests.request(
+        "POST", SpotifyCreatePlaylistURL, headers=Spotifyheaders, data=SpotifyCreatePlaylistBody)
+    # print(SpotifyCreatePlaylistResponse.json())
+    SpotifyNewPlaylistId = SpotifyCreatePlaylistResponse.json()['id']
+    print(SpotifyNewPlaylistId)
+    
+    #step 6, add items to spotify 
+
+    SpotifyAddItemToPlaylistURL = "https://api.spotify.com/v1/playlists/" + \
+        SpotifyNewPlaylistId + "/tracks?uris="+SpotifyTrackURIString
+    SpotifyAddItemToPlaylistResponse = requests.request(
+        "POST", SpotifyAddItemToPlaylistURL, headers=Spotifyheaders)  # , data=SpotifyAddItemToPlaylistBody)
+
+    print(SpotifyAddItemToPlaylistResponse.text)
+
+    return Response("hello")

@@ -4,7 +4,7 @@ import { ReactComponent as DeezerLogo96px } from "../assets/deezerLogo_96px.svg"
 const LoginDeezer = (props) => {
     return (
         <div>
-            <div class="text-gray-400 bg-gray-900 body-font h-[65vh]">
+            <div class="text-gray-400 bg-gray-900 body-font h-[66vh]">
                 <br />
                 <span class="flex justify-center items-center">
                     <DeezerLogo96px />
