@@ -157,16 +157,27 @@ const DeezerSuccess = () => {
     // }, [playlists]);
 
     return (
-        <div>
+        <div class="text-gray-400 bg-gray-900 body-font h-[66vh]">
             {console.log("user::", user)}
+            {user.name && (
+                <div className="justify-center items-center m-auto text-3xl text-orange-400 py-8">
+                    Logged in Succesfully to Deezeer
+                </div>
+            )}
             {user.name && user.picture_small && (
-                <div className="profile">
-                    <img src={user.picture_small} alt="profile" />
-                    <h1>Hello 👋, {user.name}!</h1>
+                <div className="flex justify-center items-center m-auto py-8">
+                    Deezer logged in as&nbsp;
+                    <br />
+                    {user.name}&nbsp;
+                    <img
+                        src={user.picture_small}
+                        alt="profile"
+                        className="rounded-3xl"
+                    />
                 </div>
             )}
 
-            {console.log("playlists::", playlists)}
+            {/* {console.log("playlists::", playlists)}
             {playlists && playlists.data && (
                 <div className="playlists">
                     <h1>Your playlists:</h1>
@@ -204,7 +215,7 @@ const DeezerSuccess = () => {
                         })}
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

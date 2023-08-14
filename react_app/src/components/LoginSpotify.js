@@ -6,7 +6,7 @@ const LoginSpotify = (props) => {
         // <div>
         //     <p>Spotify Login Page Here!</p>
         // </div>
-        <div class="text-gray-400 bg-gray-900 body-font h-[65vh]">
+        <div class="text-gray-400 bg-gray-900 body-font h-[66vh]">
             <br />
             <span class="flex justify-center items-center">
                 <SpotifyLogo96px />

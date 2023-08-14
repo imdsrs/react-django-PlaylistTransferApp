@@ -71,6 +71,7 @@ const HomeBody = () => {
                                     <AppleMusicLogo />
                                 </span>
                                 <div class="flex-grow">
+                                    <h2>Coming Soon</h2>
                                     <h2 class="text-black title-font font-medium">
                                         Spotify to Apple Music
                                     </h2>
@@ -133,8 +134,8 @@ const HomeBody = () => {
                                     <h2 class="text-white title-font font-medium">
                                         Youtube Music to Spotify
                                     </h2>
-                                    <a
-                                        href="test"
+                                    <Link
+                                        to="ListYoutubeMusicPlaylists/toSpotify"
                                         class="text-indigo-400 inline-flex items-center"
                                     >
                                         Transfer
@@ -150,7 +151,7 @@ const HomeBody = () => {
                                             <path d="M5 12h14"></path>
                                             <path d="M12 5l7 7-7 7"></path>
                                         </svg>
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -161,6 +162,7 @@ const HomeBody = () => {
                                     <AppleMusicLogo />
                                 </span>
                                 <div class="flex-grow">
+                                    <h2>Coming Soon</h2>
                                     <h2 class="text-black title-font font-medium">
                                         Youtube Music to Apple Music
                                     </h2>
@@ -339,6 +341,7 @@ const HomeBody = () => {
                                     <AppleMusicLogo />
                                 </span>
                                 <div class="flex-grow">
+                                    <h2>Coming Soon</h2>
                                     <h2 class="text-black title-font font-medium">
                                         Deezer to Apple Music
                                     </h2>

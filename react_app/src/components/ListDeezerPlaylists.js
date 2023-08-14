@@ -47,7 +47,7 @@ const ListDeezerPlaylists = () => {
 
     return (
         <div class="text-gray-400 bg-gray-900 body-font">
-            <h1>{destinationValue}</h1>
+            {/* <h1>{destinationValue}</h1> */}
             {console.log("user::", user)}
             {user.name && user.picture_small && (
                 <div className="flex justify-end items-end text-sm">
