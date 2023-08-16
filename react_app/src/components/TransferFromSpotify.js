@@ -19,6 +19,9 @@ const TransferFromSpotify = () => {
         if (destinationValue === "toDeezer") {
             url = url + localStorage.getItem("DeezerAccessToken");
         }
+        if (destinationValue === "toYoutubeMusic") {
+            url = url + localStorage.getItem("YoutubeMusicAccessToken");
+        }
         await axios
             .get(url, {
                 headers: {

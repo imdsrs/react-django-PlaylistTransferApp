@@ -41,7 +41,7 @@ const ListSpotifyPlaylists = () => {
 
     return (
         <div class="text-gray-400 bg-gray-900 body-font">
-            {/* <h1>{destinationValue}</h1> */}
+            <h1>{destinationValue}</h1>
             {console.log("profile::", profile)}
             {profile.display_name &&
                 profile.images &&
@@ -130,7 +130,7 @@ const ListSpotifyPlaylists = () => {
                                                     "toDeezer"
                                                         ? "Deezer"
                                                         : destinationValue ===
-                                                          "toYoutube"
+                                                          "toYoutubeMusic"
                                                         ? "Youtube Music"
                                                         : destinationValue ===
                                                           "toSpotify"

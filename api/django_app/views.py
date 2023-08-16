@@ -90,10 +90,11 @@ def getDataFromSpotify(request, destinationValue, playlistId, accessTokenSpotify
             ResponseValue = DeezerISCRResponse.json()['error']
             ResponseStatus = status.HTTP_207_MULTI_STATUS
         ISCRCounter += 1
+    print(DeezerTrackIdsList)
 
-    if ResponseStatus == 200 or not DeezerTrackIdsList:
-        ResponseValue['TotalSongs'] = len(SpotifyISCRValue)
-        ResponseValue['CurrentSuccessfulTransfers'] = len(SpotifyISCRValue)
+    if ResponseStatus == 200 or DeezerTrackIdsList:
+        # ResponseValue['TotalSongs'] = len(SpotifyISCRValue)
+        # ResponseValue['CurrentSuccessfulTransfers'] = len(SpotifyISCRValue)
         #to remove duplicate values from the list 
         DeezerTrackIdsList = list(set(DeezerTrackIdsList))
         print(DeezerTrackIdsList)
@@ -115,9 +116,9 @@ def getDataFromSpotify(request, destinationValue, playlistId, accessTokenSpotify
         DeezerPlaylistResponse = requests.request(
             "POST", DeezerURLPlaylist, headers=DeezerHeaders)
         print(DeezerPlaylistResponse.text)
-    else:
-        ResponseValue['TotalSongs'] = len(SpotifyISCRValue)
-        ResponseValue['CurrentSuccessfulTransfers'] = len(DeezerTrackIdsList)
+    # else:
+    ResponseValue['TotalSongs'] = len(SpotifyISCRValue)
+    ResponseValue['CurrentSuccessfulTransfers'] = len(DeezerTrackIdsList)
     print(ResponseValue)
     print(ResponseStatus)
     
@@ -198,7 +199,7 @@ def getDataFromDeezer(request, destinationValue, playlistId, accessTokendeezer, 
     
     print(SpotifyTrackURIValue)
 
-    if ResponseStatus == 200 or not SpotifyTrackURIValue:
+    if ResponseStatus == 200 or SpotifyTrackURIValue:
         ResponseValue['TotalSongs'] = len(DeezerISRCValue)
         ResponseValue['CurrentSuccessfulTransfers'] = len(SpotifyTrackURIValue)
         SpotifyUserURL = "https://api.spotify.com/v1/me"
@@ -423,7 +424,7 @@ def getDataFromYoutubeMusic(request, destinationValue, playlistId, accessTokenYo
 
     print(SpotifyTrackURIValue)
 
-    if ResponseStatus == 200 or not SpotifyTrackURIValue:
+    if ResponseStatus == 200 or SpotifyTrackURIValue:
         ResponseValue['TotalSongs'] = len(YoutubeMusicQueryParams)
         ResponseValue['CurrentSuccessfulTransfers'] = len(SpotifyTrackURIValue)
         
