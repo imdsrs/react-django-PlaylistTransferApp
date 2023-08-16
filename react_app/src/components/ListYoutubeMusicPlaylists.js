@@ -135,7 +135,7 @@ const ListYoutubeMusicPlaylists = () => {
                                                 {destinationValue === "toDeezer"
                                                     ? "Deezer"
                                                     : destinationValue ===
-                                                      "toYoutube"
+                                                      "toYoutubeMusic"
                                                     ? "Youtube Music"
                                                     : destinationValue ===
                                                       "toSpotify"

@@ -43,8 +43,8 @@ const HomeBody = () => {
                                     <h2 class="text-white title-font font-medium">
                                         Spotify to Youtube Music
                                     </h2>
-                                    <a
-                                        href="test"
+                                    <Link
+                                        to="ListSpotifyPlaylists/toYoutubeMusic"
                                         class="text-indigo-400 inline-flex items-center"
                                     >
                                         Transfer
@@ -60,7 +60,7 @@ const HomeBody = () => {
                                             <path d="M5 12h14"></path>
                                             <path d="M12 5l7 7-7 7"></path>
                                         </svg>
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
