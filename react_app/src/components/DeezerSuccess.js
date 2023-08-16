@@ -176,46 +176,6 @@ const DeezerSuccess = () => {
                     />
                 </div>
             )}
-
-            {/* {console.log("playlists::", playlists)}
-            {playlists && playlists.data && (
-                <div className="playlists">
-                    <h1>Your playlists:</h1>
-                    <div
-                        style={{
-                            display: "grid",
-                            // gridTemplateColumns: "auto auto auto auto",
-                        }}
-                    >
-                        {playlists.data.map((playlists, index) => {
-                            return (
-                                <div>
-                                    <div
-                                        key={index}
-                                        className="playlists"
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                        }}
-                                    >
-                                        <img
-                                            src={playlists.picture}
-                                            alt="profile"
-                                            height="5%"
-                                            width="5%"
-                                        />
-                                        <h2>
-                                            Tracks in {playlists.title} are:{" "}
-                                        </h2>
-                                        <h3>By {playlists.link}</h3>
-                                    </div>
-                                    <br />
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            )} */}
         </div>
     );
 };
