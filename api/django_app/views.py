@@ -23,10 +23,12 @@ import requests
 import json
 import time
 import datetime
+#use this library to match all things involving Youtube Music 
+from difflib import SequenceMatcher
 
 
 @api_view(["GET"])
-def getRoutes(request, destinationValue, playlistId, accessTokenSpotify, accessTokenDestination):
+def getDataFromSpotify(request, destinationValue, playlistId, accessTokenSpotify, accessTokenDestination):
     print("request::", request)
     print("destinationValue::", destinationValue)
     print("playlistId::", playlistId)
@@ -70,6 +72,8 @@ def getRoutes(request, destinationValue, playlistId, accessTokenSpotify, accessT
 
     ISCRCounter = 0
     DeezerURLISCRFetch = "https://api.deezer.com/track/isrc:"
+    ResponseStatus = status.HTTP_200_OK
+    ResponseValue = {'Response' : 'Transfer Complete'}
     while ISCRCounter < len(SpotifyISCRValue):
         if (ISCRCounter % 40 == 0 & ISCRCounter>0):
             time.sleep(5)
@@ -77,34 +81,47 @@ def getRoutes(request, destinationValue, playlistId, accessTokenSpotify, accessT
         print(DeezerURLISCRFetch+SpotifyISCRValue[ISCRCounter])
         DeezerISCRResponse = requests.request(
             "GET", DeezerURLISCRFetch+SpotifyISCRValue[ISCRCounter], headers=DeezerHeaders)
-        DeezerTrackIdsList.append(DeezerISCRResponse.json()['id'])
-        if (DeezerISCRResponse.status_code == 200):
+        if (DeezerISCRResponse.status_code == 200 and 'error' not in DeezerISCRResponse.json()):
+            print(DeezerISCRResponse.text)
+            DeezerTrackIdsList.append(DeezerISCRResponse.json()['id'])
             print("no error")
         else:
-            print("error::" + DeezerISCRResponse.json()['error'])
+            print("error::" + str(DeezerISCRResponse.json()['error']))
+            ResponseValue = DeezerISCRResponse.json()['error']
+            ResponseStatus = status.HTTP_207_MULTI_STATUS
         ISCRCounter += 1
 
-    print(DeezerTrackIdsList)
-    DeezerTrackIdsString = ','.join(str(valueInList)
-                                    for valueInList in DeezerTrackIdsList)
-    print("DeezerTrackIdsString::" + DeezerTrackIdsString)
-    # DeezerMeResponse = DeezerMeResponse.json()
-    # print(str(DeezerMeResponse['id']) + "::::" + DeezerMeResponse['name'])
+    if ResponseStatus == 200 or not DeezerTrackIdsList:
+        ResponseValue['TotalSongs'] = len(SpotifyISCRValue)
+        ResponseValue['CurrentSuccessfulTransfers'] = len(SpotifyISCRValue)
+        #to remove duplicate values from the list 
+        DeezerTrackIdsList = list(set(DeezerTrackIdsList))
+        print(DeezerTrackIdsList)
+        DeezerTrackIdsString = ','.join(str(valueInList)
+                                        for valueInList in DeezerTrackIdsList)
+        print("DeezerTrackIdsString::" + DeezerTrackIdsString)
+        # DeezerMeResponse = DeezerMeResponse.json()
+        # print(str(DeezerMeResponse['id']) + "::::" + DeezerMeResponse['name'])
 
-    DeezerPlaylistId = "11623416004"
-    DeezerURLPlaylist = "https://api.deezer.com/playlist/"+DeezerPlaylistId + \
-        "/tracks?access_token="+accessTokenDestination+"&order=" + \
-        DeezerTrackIdsString+"&songs="+DeezerTrackIdsString
-    print(DeezerURLPlaylist)
-    # DeezerAddTrackspayload = json.dumps({
-    #     "order": DeezerTrackIdsString
-    # })
+        DeezerPlaylistId = "11623416004"
+        DeezerURLPlaylist = "https://api.deezer.com/playlist/"+DeezerPlaylistId + \
+            "/tracks?access_token="+accessTokenDestination+"&order=" + \
+            DeezerTrackIdsString+"&songs="+DeezerTrackIdsString
+        print(DeezerURLPlaylist)
+        # DeezerAddTrackspayload = json.dumps({
+        #     "order": DeezerTrackIdsString
+        # })
 
-    DeezerPlaylistResponse = requests.request(
-        "POST", DeezerURLPlaylist, headers=DeezerHeaders)
-    print(DeezerPlaylistResponse.text)
+        DeezerPlaylistResponse = requests.request(
+            "POST", DeezerURLPlaylist, headers=DeezerHeaders)
+        print(DeezerPlaylistResponse.text)
+    else:
+        ResponseValue['TotalSongs'] = len(SpotifyISCRValue)
+        ResponseValue['CurrentSuccessfulTransfers'] = len(DeezerTrackIdsList)
+    print(ResponseValue)
+    print(ResponseStatus)
     
-    return Response("hello")
+    return Response(data=ResponseValue, status=ResponseStatus)
 
 
 @api_view(["GET"])
@@ -140,6 +157,8 @@ def getDataFromDeezer(request, destinationValue, playlistId, accessTokendeezer, 
     DeezerTrackFetchURL = "https://api.deezer.com/track/"
     DeezerISRCValue = []
     ISCRCounter = 0
+    ResponseStatus = status.HTTP_200_OK
+    ResponseValue = {'Response': 'Transfer Complete'}
     while ISCRCounter < len(DeezerTrackIDValue):
         if (ISCRCounter % 40 == 0 & ISCRCounter > 0):
             time.sleep(5)
@@ -147,17 +166,19 @@ def getDataFromDeezer(request, destinationValue, playlistId, accessTokendeezer, 
             "GET", DeezerTrackFetchURL+str(DeezerTrackIDValue[ISCRCounter]), headers=DeezerHeaders)
         # print(DeezerTrackValueResponse.text)
         # DeezerISRCValue.append(DeezerTrackValueResponse.json()['isrc'])
-        if (DeezerTrackValueResponse.status_code == 200):
+        if (DeezerTrackValueResponse.status_code == 200 and 'error' not in DeezerTrackValueResponse.json()):
             DeezerISRCValue.append(DeezerTrackValueResponse.json()['isrc'])
             print("no error")
         else:
-            print("error::" + DeezerTrackValueResponse.json()['error'])
+            print("error::" + str(DeezerTrackValueResponse.json()['error']))
         ISCRCounter += 1
     print(DeezerISRCValue)
 
     SpotifyTrackURL = "https://api.spotify.com/v1/search?type=track&q=isrc:" #GBAHS2200261&offset=0&limit=1
     SpotifyTrackURIValue = []
     SpotifyTrackCounter = 0
+    ResponseStatus = status.HTTP_200_OK
+    ResponseValue = {'Response': 'Transfer Complete', 'ISRC Not Found': ''}
     while SpotifyTrackCounter < len(DeezerISRCValue):
         if (SpotifyTrackCounter % 40 == 0 & SpotifyTrackCounter > 0):
             time.sleep(5)
@@ -169,158 +190,168 @@ def getDataFromDeezer(request, destinationValue, playlistId, accessTokendeezer, 
             print("no error")
         else:
             print("error:: no value found for ISCR: " +
-                  DeezerISRCValue[SpotifyTrackCounter])
+                  str(DeezerISRCValue[SpotifyTrackCounter]))
+            ResponseValue['ISRC Not Found'] += str(
+                DeezerISRCValue[SpotifyTrackCounter])
+            ResponseStatus = status.HTTP_207_MULTI_STATUS
         SpotifyTrackCounter += 1
     
     print(SpotifyTrackURIValue)
 
-    SpotifyUserURL = "https://api.spotify.com/v1/me"
-    SpotifyUserResponse = requests.request(
-        "GET", SpotifyUserURL, headers=Spotifyheaders)
-    SpotifyUserId = SpotifyUserResponse.json()['id']
-    print(SpotifyUserId)
+    if ResponseStatus == 200 or not SpotifyTrackURIValue:
+        ResponseValue['TotalSongs'] = len(DeezerISRCValue)
+        ResponseValue['CurrentSuccessfulTransfers'] = len(SpotifyTrackURIValue)
+        SpotifyUserURL = "https://api.spotify.com/v1/me"
+        SpotifyUserResponse = requests.request(
+            "GET", SpotifyUserURL, headers=Spotifyheaders)
+        SpotifyUserId = SpotifyUserResponse.json()['id']
+        print(SpotifyUserId)
 
-    timeNow = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+        timeNow = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
 
-    SpotifyCreatePlaylistBody = json.dumps({
-        "name": "Deezer To Spotify " + timeNow,
-        "description": "New playlist description",
-        "public": "false"
+        SpotifyCreatePlaylistBody = json.dumps({
+            "name": "Deezer To Spotify " + timeNow,
+            "description": "New playlist description",
+            "public": "false"
+            })
+
+        SpotifyCreatePlaylistURL = "https://api.spotify.com/v1/users/"+ SpotifyUserId +"/playlists"
+        SpotifyCreatePlaylistResponse = requests.request(
+            "POST", SpotifyCreatePlaylistURL, headers=Spotifyheaders, data=SpotifyCreatePlaylistBody)
+        print(SpotifyCreatePlaylistResponse.json())
+        SpotifyNewPlaylistId = SpotifyCreatePlaylistResponse.json()['id']
+        print(SpotifyNewPlaylistId)
+
+        SpotifyTrackURIValue = list(set(SpotifyTrackURIValue))
+        SpotifyTrackURIString = ','.join(str(valueInList)
+                                        for valueInList in SpotifyTrackURIValue)
+        # SpotifyTrackURIString = "%27" + SpotifyTrackURIString + "%27"
+        print("SpotifyTrackURIString:::"+SpotifyTrackURIString)
+
+        SpotifyAddItemToPlaylistBody = json.dumps({
+            "uris": SpotifyTrackURIString,
         })
 
-    SpotifyCreatePlaylistURL = "https://api.spotify.com/v1/users/"+ SpotifyUserId +"/playlists"
-    SpotifyCreatePlaylistResponse = requests.request(
-        "POST", SpotifyCreatePlaylistURL, headers=Spotifyheaders, data=SpotifyCreatePlaylistBody)
-    print(SpotifyCreatePlaylistResponse.json())
-    SpotifyNewPlaylistId = SpotifyCreatePlaylistResponse.json()['id']
-    print(SpotifyNewPlaylistId)
+        SpotifyAddItemToPlaylistURL = "https://api.spotify.com/v1/playlists/" + SpotifyNewPlaylistId + "/tracks?uris="+SpotifyTrackURIString
+        SpotifyAddItemToPlaylistResponse = requests.request(
+            "POST", SpotifyAddItemToPlaylistURL, headers=Spotifyheaders)#, data=SpotifyAddItemToPlaylistBody)
+        
+        print(SpotifyAddItemToPlaylistResponse.text)
+    else:
+        ResponseValue['TotalSongs'] = len(DeezerISRCValue)
+        ResponseValue['CurrentSuccessfulTransfers'] = len(
+            SpotifyTrackURIValue)
 
-    SpotifyTrackURIString = ",".join(str(valueInList)
-                                     for valueInList in SpotifyTrackURIValue)
-    # SpotifyTrackURIString = "%27" + SpotifyTrackURIString + "%27"
-    print("SpotifyTrackURIString:::"+SpotifyTrackURIString)
+    return Response(data=ResponseValue, status=ResponseStatus)
 
-    SpotifyAddItemToPlaylistBody = json.dumps({
-        "uris": SpotifyTrackURIString,
-    })
+# @api_view(["POST"])
+# def GoogleLogin(request):
+#     print("hello")
+#     print(type(request))#.body.access_token)
+#     print(request.body)
+#     print(request.data["access_token"])
+#     # print(request.body.query_params('access_token'))
+#     # print(request.POST)
 
-    SpotifyAddItemToPlaylistURL = "https://api.spotify.com/v1/playlists/" + SpotifyNewPlaylistId + "/tracks?uris="+SpotifyTrackURIString
-    SpotifyAddItemToPlaylistResponse = requests.request(
-        "POST", SpotifyAddItemToPlaylistURL, headers=Spotifyheaders)#, data=SpotifyAddItemToPlaylistBody)
-    
-    print(SpotifyAddItemToPlaylistResponse.text)
+#     ##create a session cookie and "ADD" access toke to USER model 
+#     test = "testing"
+#     scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
+#     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
+#     api_service_name = "youtube"
+#     api_version = "v3"
+#     client_secrets_file = "..\..\google_oauth.json"
 
-    return Response("hello")
+#     # Get credentials and create an API client
+#     # flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
+#     #     client_secrets_file, scopes)
+#     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(client_secrets_file, scopes=scopes)
+#     credentials = flow.run_console()
+#     youtube = googleapiclient.discovery.build(
+#         api_service_name, api_version, credentials=credentials)
 
-@api_view(["POST"])
-def GoogleLogin(request):
-    print("hello")
-    print(type(request))#.body.access_token)
-    print(request.body)
-    print(request.data["access_token"])
-    # print(request.body.query_params('access_token'))
-    # print(request.POST)
+#     request = youtube.playlistItems().list(
+#         part="snippet,contentDetails",
+#         maxResults=25,
+#         playlistId="PL6aVbvHlra__fi34KDQR90NTXMEA88WLf"
+#     )
+#     response = request.execute()
 
-    ##create a session cookie and "ADD" access toke to USER model 
-    test = "testing"
-    scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
-    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-
-    api_service_name = "youtube"
-    api_version = "v3"
-    client_secrets_file = "..\..\google_oauth.json"
-
-    # Get credentials and create an API client
-    # flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-    #     client_secrets_file, scopes)
-    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(client_secrets_file, scopes=scopes)
-    credentials = flow.run_console()
-    youtube = googleapiclient.discovery.build(
-        api_service_name, api_version, credentials=credentials)
-
-    request = youtube.playlistItems().list(
-        part="snippet,contentDetails",
-        maxResults=25,
-        playlistId="PL6aVbvHlra__fi34KDQR90NTXMEA88WLf"
-    )
-    response = request.execute()
-
-    print(response)
-    return Response(test)
+#     print(response)
+#     return Response(test)
 
 
-class GoogleLoginRedirectApi(View):
-    def get(self, request, *args, **kwargs):
-        google_login_flow = services.GoogleRawLoginFlowService()
+# class GoogleLoginRedirectApi(View):
+#     def get(self, request, *args, **kwargs):
+#         google_login_flow = services.GoogleRawLoginFlowService()
 
-        authorization_url, state = google_login_flow.get_authorization_url()
+#         authorization_url, state = google_login_flow.get_authorization_url()
 
-        request.session["google_oauth2_state"] = state
+#         request.session["google_oauth2_state"] = state
 
-        return redirect(authorization_url)
+#         return redirect(authorization_url)
 
 
-class GoogleLoginApi(View):
-    class InputValidationForm(forms.Form):
-        code = forms.CharField(required=False)
-        error = forms.CharField(required=False)
-        state = forms.CharField(required=False)
+# class GoogleLoginApi(View):
+#     class InputValidationForm(forms.Form):
+#         code = forms.CharField(required=False)
+#         error = forms.CharField(required=False)
+#         state = forms.CharField(required=False)
 
-    def get(self, request, *args, **kwargs):
-        input_form = self.InputValidationForm(data=request.GET)
+#     def get(self, request, *args, **kwargs):
+#         input_form = self.InputValidationForm(data=request.GET)
 
-        if not input_form.is_valid():
-            return
+#         if not input_form.is_valid():
+#             return
 
-        validated_data = input_form.cleaned_data
+#         validated_data = input_form.cleaned_data
 
-        code = validated_data["code"] if validated_data.get(
-            "code") != "" else None
-        error = validated_data["error"] if validated_data.get(
-            "error") != "" else None
-        state = validated_data["state"] if validated_data.get(
-            "state") != "" else None
+#         code = validated_data["code"] if validated_data.get(
+#             "code") != "" else None
+#         error = validated_data["error"] if validated_data.get(
+#             "error") != "" else None
+#         state = validated_data["state"] if validated_data.get(
+#             "state") != "" else None
 
-        if error is not None:
-            return JsonResponse({"error": error}, status=400)
+#         if error is not None:
+#             return JsonResponse({"error": error}, status=400)
 
-        if code is None or state is None:
-            return JsonResponse({"error": "Code and state are required."}, status=400)
+#         if code is None or state is None:
+#             return JsonResponse({"error": "Code and state are required."}, status=400)
 
-        session_state = request.session.get("google_oauth2_state")
+#         session_state = request.session.get("google_oauth2_state")
 
-        if session_state is None:
-            return JsonResponse({"error": "CSRF check failed."}, status=400)
+#         if session_state is None:
+#             return JsonResponse({"error": "CSRF check failed."}, status=400)
 
-        del request.session["google_oauth2_state"]
+#         del request.session["google_oauth2_state"]
 
-        if state != session_state:
-            return JsonResponse({"error": "CSRF check failed."}, status=400)
+#         if state != session_state:
+#             return JsonResponse({"error": "CSRF check failed."}, status=400)
 
-        google_login_flow = services.GoogleRawLoginFlowService()
+#         google_login_flow = services.GoogleRawLoginFlowService()
 
-        google_tokens = google_login_flow.get_tokens(code=code)
+#         google_tokens = google_login_flow.get_tokens(code=code)
 
-        id_token_decoded = google_tokens.decode_id_token()
-        user_info = google_login_flow.get_user_info(
-            google_tokens=google_tokens)
+#         id_token_decoded = google_tokens.decode_id_token()
+#         user_info = google_login_flow.get_user_info(
+#             google_tokens=google_tokens)
 
-        user_email = id_token_decoded["email"]
-        request_user_list = user_list(filters={"email": user_email})
-        user = request_user_list.get() if request_user_list else None
+#         user_email = id_token_decoded["email"]
+#         request_user_list = user_list(filters={"email": user_email})
+#         user = request_user_list.get() if request_user_list else None
 
-        if user is None:
-            return JsonResponse({"error": f"User with email {user_email} is not found."}, status=404)
+#         if user is None:
+#             return JsonResponse({"error": f"User with email {user_email} is not found."}, status=404)
 
-        login(request, user)
+#         login(request, user)
 
-        result = {
-            "id_token_decoded": id_token_decoded,
-            "user_info": user_info,
-        }
+#         result = {
+#             "id_token_decoded": id_token_decoded,
+#             "user_info": user_info,
+#         }
 
-        return JsonResponse(result, status=200)
+#         return JsonResponse(result, status=200)
 
 
 @api_view(["GET"])
@@ -371,6 +402,8 @@ def getDataFromYoutubeMusic(request, destinationValue, playlistId, accessTokenYo
     SpotifyTrackURL = "https://api.spotify.com/v1/search?type=track&limit=1&q="
     SpotifyTrackURIValue = []
     SpotifyTrackCounter = 0
+    ResponseStatus = status.HTTP_200_OK
+    ResponseValue = {'Response': 'Transfer Complete', 'Songs Not Found': ''}
     while SpotifyTrackCounter < len(YoutubeMusicQueryParams):
         if (SpotifyTrackCounter % 40 == 0 & SpotifyTrackCounter > 0):
             time.sleep(5)
@@ -382,38 +415,50 @@ def getDataFromYoutubeMusic(request, destinationValue, playlistId, accessTokenYo
             print("no error")
         else:
             print("error:: no value found for Query: " +
-                  YoutubeMusicQueryParams[SpotifyTrackCounter])
+                  str(YoutubeMusicQueryParams[SpotifyTrackCounter]))
+            ResponseValue['Songs Not Found'] += str(
+                YoutubeMusicQueryParams[SpotifyTrackCounter])
+            ResponseStatus = status.HTTP_207_MULTI_STATUS
         SpotifyTrackCounter += 1
 
     print(SpotifyTrackURIValue)
 
-    SpotifyTrackURIString = ",".join(str(valueInList)
-                                     for valueInList in SpotifyTrackURIValue)
-    
-    # step 5, create playlist on Spotify
-    timeNow = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    if ResponseStatus == 200 or not SpotifyTrackURIValue:
+        ResponseValue['TotalSongs'] = len(YoutubeMusicQueryParams)
+        ResponseValue['CurrentSuccessfulTransfers'] = len(SpotifyTrackURIValue)
+        
+        SpotifyTrackURIValue = list(set(SpotifyTrackURIValue))
+        SpotifyTrackURIString = ','.join(str(valueInList)
+                                        for valueInList in SpotifyTrackURIValue)
+        
+        # step 5, create playlist on Spotify
+        timeNow = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    SpotifyCreatePlaylistBody = json.dumps({
-        "name": "Youtube Music To Spotify " + timeNow,
-        "description": "Youtube Music To Spotify playlist description" + timeNow,
-        "public": "false"
-    })
+        SpotifyCreatePlaylistBody = json.dumps({
+            "name": "Youtube Music To Spotify " + timeNow,
+            "description": "Youtube Music To Spotify playlist description" + timeNow,
+            "public": "false"
+        })
 
-    SpotifyCreatePlaylistURL = "https://api.spotify.com/v1/users/" + \
-        SpotifyUserId + "/playlists"
-    SpotifyCreatePlaylistResponse = requests.request(
-        "POST", SpotifyCreatePlaylistURL, headers=Spotifyheaders, data=SpotifyCreatePlaylistBody)
-    # print(SpotifyCreatePlaylistResponse.json())
-    SpotifyNewPlaylistId = SpotifyCreatePlaylistResponse.json()['id']
-    print(SpotifyNewPlaylistId)
-    
-    #step 6, add items to spotify 
+        SpotifyCreatePlaylistURL = "https://api.spotify.com/v1/users/" + \
+            SpotifyUserId + "/playlists"
+        SpotifyCreatePlaylistResponse = requests.request(
+            "POST", SpotifyCreatePlaylistURL, headers=Spotifyheaders, data=SpotifyCreatePlaylistBody)
+        # print(SpotifyCreatePlaylistResponse.json())
+        SpotifyNewPlaylistId = SpotifyCreatePlaylistResponse.json()['id']
+        print(SpotifyNewPlaylistId)
+        
+        #step 6, add items to spotify 
 
-    SpotifyAddItemToPlaylistURL = "https://api.spotify.com/v1/playlists/" + \
-        SpotifyNewPlaylistId + "/tracks?uris="+SpotifyTrackURIString
-    SpotifyAddItemToPlaylistResponse = requests.request(
-        "POST", SpotifyAddItemToPlaylistURL, headers=Spotifyheaders)  # , data=SpotifyAddItemToPlaylistBody)
+        SpotifyAddItemToPlaylistURL = "https://api.spotify.com/v1/playlists/" + \
+            SpotifyNewPlaylistId + "/tracks?uris="+SpotifyTrackURIString
+        SpotifyAddItemToPlaylistResponse = requests.request(
+            "POST", SpotifyAddItemToPlaylistURL, headers=Spotifyheaders)  # , data=SpotifyAddItemToPlaylistBody)
 
-    print(SpotifyAddItemToPlaylistResponse.text)
+        print(SpotifyAddItemToPlaylistResponse.text)
+    else:
+        ResponseValue['TotalSongs'] = len(YoutubeMusicQueryParams)
+        ResponseValue['CurrentSuccessfulTransfers'] = len(
+            SpotifyTrackURIValue)
 
-    return Response("hello")
+    return Response(data=ResponseValue, status=ResponseStatus)
