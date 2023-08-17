@@ -48,7 +48,7 @@ const TransferFromDeezer = () => {
                 <TransferLoading />
             ) : responseFromBE.status === 200 && responseFromBE.data ? (
                 <div>
-                    <div className="text-gray-400 bg-gray-900 body-font text-center px-10 py-5 text-4xl w-full h-[66vh]">
+                    <div className="text-gray-400 bg-gray-900 body-font text-center px-10 py-5 text-4xl w-full">
                         Transfer Complete for{" "}
                         {responseFromBE.data.CurrentSuccessfulTransfers} of{" "}
                         {responseFromBE.data.TotalSongs} Songs
