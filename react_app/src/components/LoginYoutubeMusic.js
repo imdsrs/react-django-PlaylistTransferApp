@@ -1,22 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { LoginSocialGoogle } from "reactjs-social-login";
-import GoogleSocialAuth from "../pages/GoogleSocialAuth";
 import "../App.css";
-import axios from "axios";
 import { ReactComponent as YoutubeMusicLogo96px } from "../assets/youtubeMusicLogo_96px.svg";
-
-const handleCallbackResponse = async (response) => {
-    // console.log("hello::", response);
-    let res = await axios.post(
-        "http://127.0.0.1:8000/hello/rest-auth/google/",
-        {
-            access_token: response.accesstoken,
-        }
-    );
-    console.log(res);
-    return await res.status;
-};
 
 const LoginYoutubeMusic = () => {
     const [youtubeMusicToken, setYoutubeMusicToken] = useState("");
@@ -26,16 +12,6 @@ const LoginYoutubeMusic = () => {
         setYoutubeMusicToken(localStorage.getItem("YoutubeMusicAccessToken"));
     }, [profile]);
 
-    let handleCallbackResponseTry2 = async (response) => {
-        await fetch(`http://127.0.0.1:8000/rest-auth/google/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            // access_token: response.accesstoken,
-            body: JSON.stringify(response),
-        });
-    };
     return (
         <div class="text-gray-400 bg-gray-900 body-font h-[66vh]">
             <br />
@@ -66,8 +42,6 @@ const LoginYoutubeMusic = () => {
                                 );
                                 setProfile(data);
                                 console.log(provider, data);
-                                // console.log(handleCallbackResponse(data));
-                                //handleCallbackResponseTry2(data);
                             }}
                             onReject={(err) => {
                                 console.log(err);

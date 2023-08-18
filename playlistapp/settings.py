@@ -39,28 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'api.django_app',
-    # 'django_app',
     'api.django_app.apps.DjangoAppConfig',
     #django rest framework
     'rest_framework',
-    'rest_framework.authtoken',
-    'rest_auth',
-    # 'rest_auth.registration',
      #cors headers
     'corsheaders',
-     #for social login
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount' ,
-    'allauth.socialaccount.providers.google',
-    'rest_auth.registration',
-    'allauth.socialaccount.providers.facebook',
-    'django_filters',
-    'googleapiclient',
-    'google_auth_oauthlib',
-    'google_auth_httplib2',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -161,16 +144,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend" ,
-    "allauth.account.auth_backends.AuthenticationBackend"
 )
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 CORS_ORIGIN_ALLOW_ALL = True
-
-GOOGLE_CLIENT_ID = "515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com"
-SOCIAL_SECRET = "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"
-
-AUTH_USER_MODEL = "django_app.BaseUser"
 
 CORS_ALLOW_ALL_ORIGINS = True
