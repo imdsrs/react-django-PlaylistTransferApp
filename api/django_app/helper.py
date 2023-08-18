@@ -11,8 +11,8 @@ def getSpotifyISRCValue(SpotifyResponse):
         SpotifyISRCValue.append(item['track']['external_ids']['isrc'])
 
     # SpotifyISRCValue = "[item.get('external_ids') for item in SpotifyResponse.items.track]"
-    print(SpotifyISRCValue)
-    print("getting SpotifyISRCValue")
+    # print(SpotifyISRCValue)
+    # print("getting SpotifyISRCValue")
     return SpotifyISRCValue
 
 
@@ -21,7 +21,7 @@ def getDeezerUserID(accessTokenDestination):
         accessTokenDestination
     DeezerMeResponse = requests.request(
         "GET", DeezerURLMe, headers=DeezerHeaders)
-    print("getting DeezerUserID")
+    # print("getting DeezerUserID")
     return DeezerMeResponse.json()['id']
 
 
@@ -33,23 +33,24 @@ def getDeezerISRCValues(SpotifyISRCValue):
     ResponseStatus = status.HTTP_200_OK
     ResponseValue = {'Response': 'Transfer Complete'}
     while ISRCCounter < len(SpotifyISRCValue):
-        if (ISRCCounter % 40 == 0 & ISRCCounter > 0):
+        if (ISRCCounter % 45 == 0 and ISRCCounter > 0):
+            print("sleeping for 5 seconds")
             time.sleep(5)
-        print(SpotifyISRCValue[ISRCCounter])
-        print(DeezerURLISRCFetch+SpotifyISRCValue[ISRCCounter])
+        # print(SpotifyISRCValue[ISRCCounter])
+        # print(DeezerURLISRCFetch+SpotifyISRCValue[ISRCCounter])
         DeezerISRCResponse = requests.request(
             "GET", DeezerURLISRCFetch+SpotifyISRCValue[ISRCCounter], headers=DeezerHeaders)
         if (DeezerISRCResponse.status_code == 200 and 'error' not in DeezerISRCResponse.json()):
-            print(DeezerISRCResponse.text)
+            # print(DeezerISRCResponse.text)
             DeezerTrackIdsList.append(DeezerISRCResponse.json()['id'])
-            print("no error")
+            # print("no error")
         else:
             print("error::" + str(DeezerISRCResponse.json()['error']))
             ResponseValue = DeezerISRCResponse.json()['error']
             ResponseStatus = status.HTTP_207_MULTI_STATUS
         ISRCCounter += 1
-    print(DeezerTrackIdsList)
-    print("getting ISRC values")
+    # print(DeezerTrackIdsList)
+    # print("getting ISRC values")
     return DeezerTrackIdsList, ResponseValue, ResponseStatus
 
 
@@ -60,23 +61,23 @@ def addTracksToDeezer(DeezerTrackIdsList, DeezerPlaylistId, accessTokenDestinati
     DeezerURLPlaylist = "https://api.deezer.com/playlist/"+DeezerPlaylistId + \
         "/tracks?access_token="+accessTokenDestination+"&order=" + \
         DeezerTrackIdsString+"&songs="+DeezerTrackIdsString
-    print(DeezerURLPlaylist)
+    # print(DeezerURLPlaylist)
 
     DeezerPlaylistResponse = requests.request(
         "POST", DeezerURLPlaylist, headers=DeezerHeaders)
-    print(DeezerPlaylistResponse.text)
+    # print(DeezerPlaylistResponse.text)
 
-    print("adding tracks to deezer")
+    # print("adding tracks to deezer")
 
 
 def getSpotifyTrackArtistValues(SpotifyResponse):
-    print("getting getSpotifyTrackArtistValues")
+    # print("getting getSpotifyTrackArtistValues")
     SpotifyTrackArtistValues = []
     for item in SpotifyResponse['items']:
         SpotifyTrackArtistValues.append(
             item['track']['name'] + " by " + item['track']['artists'][0]['name'])
         
-    print(SpotifyTrackArtistValues)
+    # print(SpotifyTrackArtistValues)
     return SpotifyTrackArtistValues
 
 
@@ -91,14 +92,14 @@ def getYoutubeMusicVideoIDs(SpotifyTrackArtistValues, YoutubeMusicHeaders):
             time.sleep(5)
         YoutubeMusicVideoIDsResponse = requests.request(
             "GET", YoutubeMusicURLToFetchVideoIDs+SpotifyTrackArtistValues[YoutubeMusicURLToFetchCounter], headers=YoutubeMusicHeaders)
-        print(YoutubeMusicVideoIDsResponse.json())
+        # print(YoutubeMusicVideoIDsResponse.json())
         if YoutubeMusicVideoIDsResponse.status_code == 200:
             YoutubeMusicVideoIDsList.append(YoutubeMusicVideoIDsResponse.json()['items'][0]['id']['videoId'])
         else:
             ResponseValue = YoutubeMusicVideoIDsResponse.json()['error']
             ResponseStatus = status.HTTP_207_MULTI_STATUS
         YoutubeMusicURLToFetchCounter += 1
-    print("getting getYoutubeMusicVideoIDs")
+    # print("getting getYoutubeMusicVideoIDs")
     return YoutubeMusicVideoIDsList, ResponseValue, ResponseStatus
 
 
@@ -121,9 +122,9 @@ def createYoutubePlaylist(YoutubeMusicHeaders):
     YoutubeMusicPlaylistResponse = requests.request(
         "POST", YoutubeMusicURLToCreatePlaylist, headers=YoutubeMusicHeaders, data=YoutubeMusicToCreatePlaylistBody)
     YoutubeMusicPlaylistID = YoutubeMusicPlaylistResponse.json()['id']
-    print(YoutubeMusicPlaylistResponse.json())
+    # print(YoutubeMusicPlaylistResponse.json())
 
-    print("creating yt music playlist")
+    # print("creating yt music playlist")
     return YoutubeMusicPlaylistID
 
 
@@ -148,7 +149,7 @@ def YoutubeMusicAddItemsToPlaylist(YoutubeMusicPlaylistID, YoutubeMusicVideoIDsL
 
         YoutubeMusicPlaylistAddItemResponse = requests.request(
             "POST", YoutubeMusicURLToAddItemsToPlaylist, headers=YoutubeMusicHeaders, data=YoutubeMusicAddItemsToPlaylistBody)
-        print(YoutubeMusicPlaylistAddItemResponse.json())
+        # print(YoutubeMusicPlaylistAddItemResponse.json())
         if YoutubeMusicPlaylistAddItemResponse.status_code == 200:
             YoutubeMusicPlaylistAddItemSuccessCounter += 1
         YoutubeMusicAddItemsToPlaylistCounter += 1
@@ -159,7 +160,7 @@ def getSpotifyUserID(Spotifyheaders):
     SpotifyUserURL = "https://api.spotify.com/v1/me"
     SpotifyUserResponse = requests.request(
         "GET", SpotifyUserURL, headers=Spotifyheaders)
-    print("getting spotify user ID")
+    # print("getting spotify user ID")
     return SpotifyUserResponse.json()['id']
 
 
@@ -173,14 +174,14 @@ def getURIsFromSpotify(QueryParams, Spotifyheaders, sourceValue):
     ResponseStatus = status.HTTP_200_OK
     ResponseValue = {'Response': 'Transfer Complete', 'Songs Not Found': ''}
     while SpotifyTrackCounter < len(QueryParams):
-        if (SpotifyTrackCounter % 40 == 0 & SpotifyTrackCounter > 0):
+        if (SpotifyTrackCounter % 40 == 0 and SpotifyTrackCounter > 0):
             time.sleep(5)
         SpotifyTrackValueResponse = requests.request(
             "GET", SpotifyTrackURL+str(QueryParams[SpotifyTrackCounter]), headers=Spotifyheaders)
         if (SpotifyTrackValueResponse.json()['tracks']['total'] != 0):
             SpotifyTrackURIValue.append(
                 SpotifyTrackValueResponse.json()['tracks']['items'][0]['uri'])
-            print("no error")
+            # print("no error")
         else:
             print("error:: no value found for: " +
                   str(QueryParams[SpotifyTrackCounter]))
@@ -188,7 +189,7 @@ def getURIsFromSpotify(QueryParams, Spotifyheaders, sourceValue):
                 QueryParams[SpotifyTrackCounter])
             ResponseStatus = status.HTTP_207_MULTI_STATUS
         SpotifyTrackCounter += 1
-    print("getting URIs from Spotify")
+    # print("getting URIs from Spotify")
     return SpotifyTrackURIValue, ResponseValue, ResponseStatus
 
 
@@ -204,7 +205,7 @@ def createSpotifyPlaylist(SpotifyUserId, Spotifyheaders):
         SpotifyUserId + "/playlists"
     SpotifyCreatePlaylistResponse = requests.request(
         "POST", SpotifyCreatePlaylistURL, headers=Spotifyheaders, data=SpotifyCreatePlaylistBody)
-    print("creating spotify playlist")
+    # print("creating spotify playlist")
     return SpotifyCreatePlaylistResponse.json()['id']
 
 
@@ -214,7 +215,7 @@ def addItemsToSpotifyPlaylist(SpotifyNewPlaylistId, SpotifyTrackURIString, Spoti
     SpotifyAddItemToPlaylistResponse = requests.request(
         "POST", SpotifyAddItemToPlaylistURL, headers=Spotifyheaders)  # , data=SpotifyAddItemToPlaylistBody)
 
-    print(SpotifyAddItemToPlaylistResponse.text)
+    # print(SpotifyAddItemToPlaylistResponse.text)
     return("adding items to spotify playlist")
 
 def SpotifyGetTrackIDs():
