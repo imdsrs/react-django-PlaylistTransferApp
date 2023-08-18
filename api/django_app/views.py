@@ -28,16 +28,21 @@ def getDataFromSpotify(request, destinationValue, playlistId, accessTokenSpotify
     if destinationValue == "toDeezer":
         # step 2, get ISRC values of Spotify Tracks
         SpotifyISRCValue = getSpotifyISRCValue(SpotifyResponse)
-        print(SpotifyISRCValue)
+        while (not (SpotifyResponse['next'] is None)):
+            SpotifyResponse = requests.request(
+                "GET", SpotifyResponse['next'], headers=Spotifyheaders)
+            SpotifyResponse = SpotifyResponse.json()
+            SpotifyISRCValue = SpotifyISRCValue + getSpotifyISRCValue(SpotifyResponse)
+        # print(SpotifyISRCValue)
 
         # step 3, get User ID for Deezer 
         DeezerUserId = getDeezerUserID(accessTokenDestination) # DeezerMeResponse.json()['id']
-        print(DeezerUserId)
+        # print(DeezerUserId)
 
         # step 4, find tracks on Deezer using ISRC values
         DeezerTrackIdsList, ResponseValue, ResponseStatus = getDeezerISRCValues(
             SpotifyISRCValue)
-        print(DeezerTrackIdsList)
+        # print(DeezerTrackIdsList)
 
         # to remove duplicate values from the list
         DeezerTrackIdsList = list(set(DeezerTrackIdsList))
@@ -71,13 +76,13 @@ def getDataFromSpotify(request, destinationValue, playlistId, accessTokenSpotify
                 "GET", SpotifyResponse['next'], headers=Spotifyheaders)
             SpotifyResponse = SpotifyResponse.json()
             SpotifyTrackArtistValues = SpotifyTrackArtistValues + getSpotifyTrackArtistValues(SpotifyResponse)
-        print(len(SpotifyTrackArtistValues))
+        # print(len(SpotifyTrackArtistValues))
         # print(SpotifyTrackArtistValues)
 
         # step 3, find videoId on Youtube using Spotify's Title+Artist values
         YoutubeMusicVideoIDsList, ResponseValue, ResponseStatus = getYoutubeMusicVideoIDs(
             SpotifyTrackArtistValues, YoutubeMusicHeaders)
-        print(YoutubeMusicVideoIDsList)
+        # print(YoutubeMusicVideoIDsList)
 
         # step 4, create new playlist on youtube
         YoutubeMusicPlaylistID = createYoutubePlaylist(YoutubeMusicHeaders)
@@ -119,7 +124,7 @@ def getDataFromDeezer(request, destinationValue, playlistId, accessTokendeezer, 
     DeezerTrackIDValue = []
     for item in DeezerPlaylistResponse.json()['data']:
         DeezerTrackIDValue.append(item['id'])
-    print(DeezerTrackIDValue)
+    # print(DeezerTrackIDValue)
     
     # step 3, get song ISRC values from Deezer data 
 
@@ -129,23 +134,24 @@ def getDataFromDeezer(request, destinationValue, playlistId, accessTokendeezer, 
     ResponseStatus = status.HTTP_200_OK
     ResponseValue = {'Response': 'Transfer Complete'}
     while ISRCCounter < len(DeezerTrackIDValue):
-        if (ISRCCounter % 40 == 0 & ISRCCounter > 0):
+        if (ISRCCounter % 40 == 0 and ISRCCounter > 0):
+            print("sleeping for 5 seconds")
             time.sleep(5)
         DeezerTrackValueResponse = requests.request(
             "GET", DeezerTrackFetchURL+str(DeezerTrackIDValue[ISRCCounter]), headers=DeezerHeaders)
         if (DeezerTrackValueResponse.status_code == 200 and 'error' not in DeezerTrackValueResponse.json()):
             DeezerISRCValue.append(DeezerTrackValueResponse.json()['isrc'])
-            print("no error")
+            # print("no error")
         else:
             print("error::" + str(DeezerTrackValueResponse.json()['error']))
         ISRCCounter += 1
-    print(DeezerISRCValue)
+    # print(DeezerISRCValue)
     
     # step 4, search and grab Spotify URIs for each track
 
     SpotifyTrackURIValue, ResponseValue, ResponseStatus = getURIsFromSpotify(
         DeezerISRCValue, Spotifyheaders, "fromDeezer")
-    print(SpotifyTrackURIValue)
+    # print(SpotifyTrackURIValue)
 
     # to remove duplicate values from the list
     SpotifyTrackURIValue = list(set(SpotifyTrackURIValue))
@@ -156,13 +162,13 @@ def getDataFromDeezer(request, destinationValue, playlistId, accessTokendeezer, 
     if ResponseStatus == 200 or SpotifyTrackURIValue:
         # step 5, grab current User's ID from Spotify 
         SpotifyUserId = getSpotifyUserID(Spotifyheaders)
-        print(SpotifyUserId)
+        # print(SpotifyUserId)
 
         # step 6, create playlist on Spotify 
 
         SpotifyNewPlaylistId = createSpotifyPlaylist(
             SpotifyUserId, Spotifyheaders)
-        print(SpotifyNewPlaylistId)
+        # print(SpotifyNewPlaylistId)
 
         # step 7, add items to spotify's Playlist 
 
@@ -194,16 +200,16 @@ def getDataFromYoutubeMusic(request, destinationValue, playlistId, accessTokenYo
     for item in YoutubePlaylistResponse.json()['items']:
         YoutubeMusicQueryParams.append(
             item['snippet']['title'] + " by " + item['snippet']['videoOwnerChannelTitle'])
-    print(YoutubeMusicQueryParams)
+    # print(YoutubeMusicQueryParams)
 
     #step 3, get user's spotify ID
     SpotifyUserId = getSpotifyUserID(Spotifyheaders)
-    print(SpotifyUserId)
+    # print(SpotifyUserId)
 
     #step 4, search and grab Spotify URIs for each track 
     SpotifyTrackURIValue, ResponseValue, ResponseStatus = getURIsFromSpotify(
         YoutubeMusicQueryParams, Spotifyheaders, "fromYoutubeMusic")
-    print(SpotifyTrackURIValue)
+    # print(SpotifyTrackURIValue)
 
     # to remove duplicate values from the list
     SpotifyTrackURIValue = list(set(SpotifyTrackURIValue))
@@ -215,7 +221,7 @@ def getDataFromYoutubeMusic(request, destinationValue, playlistId, accessTokenYo
         # step 5, create playlist on Spotify
         SpotifyNewPlaylistId = createSpotifyPlaylist(
             SpotifyUserId, Spotifyheaders)
-        print(SpotifyNewPlaylistId)
+        # print(SpotifyNewPlaylistId)
         
         #step 6, add items to spotify 
         addItemsToSpotifyPlaylist(
