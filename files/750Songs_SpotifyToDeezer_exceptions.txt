@@ -1,0 +1,29 @@
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+sleeping for 5 seconds
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+sleeping for 5 seconds
+sleeping for 5 seconds
+sleeping for 5 seconds
+sleeping for 5 seconds
+sleeping for 5 seconds
+sleeping for 5 seconds
+sleeping for 5 seconds
+sleeping for 5 seconds
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+sleeping for 5 seconds
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+sleeping for 5 seconds
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+sleeping for 5 seconds
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+sleeping for 5 seconds
+sleeping for 5 seconds
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+error::{'type': 'DataException', 'message': 'no data', 'code': 800}
+sleeping for 5 seconds
+sleeping for 5 seconds
