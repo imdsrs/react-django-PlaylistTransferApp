@@ -2,15 +2,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import TryModal from "./components/modal/TryModal";
 import HomeBody from "./components/HomeBody";
 import LoginSpotify from "./components/LoginSpotify";
 import LoginAppleMusic from "./components/LoginAppleMusic";
 import LoginDeezer from "./components/LoginDeezer";
 import LoginYoutubeMusic from "./components/LoginYoutubeMusic";
-import GoogleSocialAuth from "./pages/GoogleSocialAuth";
-// import LoginTryGoogle from "./views/login";
-import GoogleAuth from "./pages/GoogleAuth";
+
 import {
     SPOTIFY_CLIENT_ID,
     SPOTIFY_CLIENT_SECRET,
@@ -28,7 +25,7 @@ import {
 import DeezerSuccess from "./components/DeezerSuccess";
 import ListSpotifyPlaylists from "./components/ListSpotifyPlaylists";
 import TransferFromSpotify from "./components/TransferFromSpotify";
-import React, { useEffect } from "react";
+import React from "react";
 import ListDeezerPlaylists from "./components/ListDeezerPlaylists";
 import TransferFromDeezer from "./components/TransferFromDeezer";
 import ListYoutubeMusicPlaylists from "./components/ListYoutubeMusicPlaylists";
@@ -64,10 +61,7 @@ function App() {
                     />
                     <Route
                         path="/YoutubeMusicLogin"
-                        // element={<GoogleSocialAuth />}
                         element={<LoginYoutubeMusic />}
-                        // element={<LoginTryGoogle />}
-                        // element={<GoogleAuth />}
                     />
                     <Route
                         path="/YoutubeSuccess"
