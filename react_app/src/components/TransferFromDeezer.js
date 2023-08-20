@@ -4,6 +4,7 @@ import axios from "axios";
 import TransferLoading from "./TransferLoading";
 import TransferComplete from "./TransferComplete";
 import TransferError from "./TransferError";
+import PartialTransferComplete from "./PartialTransferComplete";
 
 const TransferFromDeezer = () => {
     const { playlistId } = useParams();
@@ -54,6 +55,15 @@ const TransferFromDeezer = () => {
                         {responseFromBE.data.TotalSongs} Songs
                     </div>
                     <TransferComplete />
+                </div>
+            ) : responseFromBE.status === 207 && responseFromBE.data ? (
+                <div>
+                    <div className="text-gray-400 bg-gray-900 body-font text-center px-10 py-5 text-4xl w-full">
+                        Partial Transfer Complete for{" "}
+                        {responseFromBE.data.CurrentSuccessfulTransfers} of{" "}
+                        {responseFromBE.data.TotalSongs} Songs
+                    </div>
+                    <PartialTransferComplete />
                 </div>
             ) : (
                 responseFromBE.data && (

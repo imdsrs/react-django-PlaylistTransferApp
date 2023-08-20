@@ -4,6 +4,7 @@ import axios from "axios";
 import TransferLoading from "./TransferLoading";
 import TransferComplete from "./TransferComplete";
 import TransferError from "./TransferError";
+import PartialTransferComplete from "./PartialTransferComplete";
 
 const TransferFromSpotify = () => {
     const { playlistId } = useParams();
@@ -63,6 +64,17 @@ const TransferFromSpotify = () => {
                         {responseFromBE.data.TotalSongs} Songs
                     </div>
                     <TransferComplete />
+                </div>
+            ) : responseFromBE.status === 207 &&
+              responseFromBE.data &&
+              responseFromBE.data.CurrentSuccessfulTransfers > 0 ? (
+                <div>
+                    <div className="text-gray-400 bg-gray-900 body-font text-center px-10 py-5 text-4xl w-full">
+                        Partial Transfer Complete for{" "}
+                        {responseFromBE.data.CurrentSuccessfulTransfers} of{" "}
+                        {responseFromBE.data.TotalSongs} Songs
+                    </div>
+                    <PartialTransferComplete />
                 </div>
             ) : (
                 responseFromBE.data && (
