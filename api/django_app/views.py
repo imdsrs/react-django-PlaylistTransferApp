@@ -114,15 +114,16 @@ def getDataFromDeezer(request, destinationValue, playlistId, accessTokendeezer, 
 
     # step 1, get data from Deezer 
 
-    DeezerURLPlaylist = "https://api.deezer.com/playlist/"+ playlistId + "/tracks?output=json&access_token="+accessTokendeezer
+    DeezerURLPlaylist = "https://api.deezer.com/playlist/"+ playlistId + "?output=json&access_token="+accessTokendeezer
 
     DeezerPlaylistResponse = requests.request(
         "GET", DeezerURLPlaylist, headers=DeezerHeaders)
+    # print(DeezerPlaylistResponse.json())
     
     # step 2, get song IDs from Deezer data 
 
     DeezerTrackIDValue = []
-    for item in DeezerPlaylistResponse.json()['data']:
+    for item in DeezerPlaylistResponse.json()['tracks']['data']:
         DeezerTrackIDValue.append(item['id'])
     # print(DeezerTrackIDValue)
     
