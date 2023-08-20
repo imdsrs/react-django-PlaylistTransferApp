@@ -108,7 +108,6 @@ function App() {
                     />
                 </Routes>
                 <Footer />
-                {/* <TryModal /> */}
             </div>
         </Router>
     );

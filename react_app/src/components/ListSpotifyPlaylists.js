@@ -7,11 +7,8 @@ const ListSpotifyPlaylists = () => {
 
     const [profile, setProfile] = useState({});
     const [playlists, setPlaylists] = useState({});
-    const [tracks, setTracks] = useState({});
 
     const PLAYLISTS_ENDPOINT = "https://api.spotify.com/v1/me/playlists";
-    const TRACKS_IN_PLAYLIST_ENDPOINT =
-        "https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=12";
     const PROFILE_ENDPOINT = "https://api.spotify.com/v1/me";
 
     // function to request data from spotify api
@@ -41,8 +38,8 @@ const ListSpotifyPlaylists = () => {
 
     return (
         <div class="text-gray-400 bg-gray-900 body-font">
-            <h1>{destinationValue}</h1>
-            {console.log("profile::", profile)}
+            {/* <h1>{destinationValue}</h1> */}
+            {/* {console.log("profile::", profile)} */}
             {profile.display_name &&
                 profile.images &&
                 profile.images[0].url && (
@@ -58,7 +55,7 @@ const ListSpotifyPlaylists = () => {
                     </div>
                 )}
 
-            {console.log("playlists", playlists)}
+            {/* {console.log("playlists", playlists)} */}
             {playlists.items && (
                 <div className="playlists mt-10">
                     <span className="text-4xl">Your playlists are:</span>

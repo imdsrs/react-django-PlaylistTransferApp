@@ -31,7 +31,7 @@ const LoginYoutubeMusic = () => {
                             client_id={
                                 "515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com"
                             }
-                            scope="https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.upload	"
+                            scope="https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.force-ssl"
                             discoveryDocs="claims_supported"
                             access_type="offline"
                             typeResponse="accessToken"
@@ -41,7 +41,7 @@ const LoginYoutubeMusic = () => {
                                     data.access_token
                                 );
                                 setProfile(data);
-                                console.log(provider, data);
+                                // console.log(provider, data);
                             }}
                             onReject={(err) => {
                                 console.log(err);
@@ -54,7 +54,7 @@ const LoginYoutubeMusic = () => {
                     </span>
                 </div>
             )}
-            {console.log("profile::", profile)}
+            {/* {console.log("profile::", profile)} */}
             {profile.name && (
                 <div className="justify-center items-center m-auto text-3xl text-white py-8">
                     Logged in Succesfully to Youtube Music

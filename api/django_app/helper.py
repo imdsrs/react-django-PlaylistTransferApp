@@ -121,8 +121,8 @@ def createYoutubePlaylist(YoutubeMusicHeaders):
 
     YoutubeMusicPlaylistResponse = requests.request(
         "POST", YoutubeMusicURLToCreatePlaylist, headers=YoutubeMusicHeaders, data=YoutubeMusicToCreatePlaylistBody)
+    print(YoutubeMusicPlaylistResponse.json())
     YoutubeMusicPlaylistID = YoutubeMusicPlaylistResponse.json()['id']
-    # print(YoutubeMusicPlaylistResponse.json())
 
     # print("creating yt music playlist")
     return YoutubeMusicPlaylistID
