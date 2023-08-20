@@ -24,7 +24,7 @@ const TransferFromYoutubeMusic = () => {
             .get(url)
             .then((response) => {
                 setResponseFromBE(response);
-                console.log(response);
+                // console.log(response);
             })
             .catch((error) => {
                 console.log(error);
@@ -43,8 +43,8 @@ const TransferFromYoutubeMusic = () => {
         <div>
             {/* {playlistId}
             {destinationValue} */}
-            {console.log("responseFromBE:", responseFromBE)}
-            {console.log("isLoading:", isLoading)}
+            {/* {console.log("responseFromBE:", responseFromBE)} */}
+            {/* {console.log("isLoading:", isLoading)} */}
             {isLoading ? (
                 <TransferLoading />
             ) : responseFromBE.status === 200 && responseFromBE.data ? (

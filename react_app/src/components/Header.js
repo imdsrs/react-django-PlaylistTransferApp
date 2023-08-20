@@ -3,7 +3,6 @@ import LogoDeezer from "./LogoDeezer";
 import LogoSpotify from "./LogoSpotify";
 import LogoYoutubeMusic from "./LogoYoutubeMusic";
 import TryModal from "./modal/TryModal";
-import { ReactComponent as InfoButton } from "../assets/info.svg";
 import { Link } from "react-router-dom";
 
 const Header = () => {

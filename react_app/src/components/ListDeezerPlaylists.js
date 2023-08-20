@@ -48,7 +48,7 @@ const ListDeezerPlaylists = () => {
     return (
         <div class="text-gray-400 bg-gray-900 body-font">
             {/* <h1>{destinationValue}</h1> */}
-            {console.log("user::", user)}
+            {/* {console.log("user::", user)} */}
             {user.name && user.picture_small && (
                 <div className="flex justify-end items-end text-sm">
                     Deezer logged in as&nbsp;
@@ -62,7 +62,7 @@ const ListDeezerPlaylists = () => {
                 </div>
             )}
 
-            {console.log("playlists::", playlists)}
+            {/* {console.log("playlists::", playlists)} */}
             {playlists && playlists.data && (
                 <div className="playlists mt-10">
                     <span className="text-4xl">Your playlists are:</span>

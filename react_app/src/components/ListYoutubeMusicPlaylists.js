@@ -44,7 +44,7 @@ const ListYoutubeMusicPlaylists = () => {
     return (
         <div class="text-gray-400 bg-gray-900 body-font">
             {/* <h1>{destinationValue}</h1> */}
-            {console.log("profile::", profile)}
+            {/* {console.log("profile::", profile)} */}
             {profile.items &&
                 profile.items[0].snippet.title &&
                 profile.items[0].snippet.thumbnails.default.url && (
@@ -63,7 +63,7 @@ const ListYoutubeMusicPlaylists = () => {
                     </div>
                 )}
 
-            {console.log("playlists", playlists)}
+            {/* {console.log("playlists", playlists)} */}
             {playlists.items && (
                 <div className="playlists mt-10">
                     <span className="text-4xl">Your playlists are:</span>
