@@ -8,13 +8,16 @@ from rest_framework.decorators import api_view
 import requests
 import json
 import time
-import datetime
+from datetime import datetime
+
 #use this library to match all things involving Youtube Music 
 from difflib import SequenceMatcher
 from fuzzywuzzy import fuzz
 
 @api_view(["GET"])
 def getDataFromSpotify(request, destinationValue, playlistId, accessTokenSpotify, accessTokenDestination):    
+    timeNow = datetime.today().strftime("%Y-%m-%d %H:%M:%S:%f")
+    print("start::" + timeNow)
     # step 1, get Track from Spotify's Playlist 
     SpotifyURL = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks"
     Spotifyheaders = {
@@ -60,6 +63,9 @@ def getDataFromSpotify(request, destinationValue, playlistId, accessTokenSpotify
 
         ResponseValue['TotalSongs'] = len(SpotifyISRCValue)
         ResponseValue['CurrentSuccessfulTransfers'] = len(DeezerTrackIdsList)
+
+        timeNow = datetime.today().strftime("%Y-%m-%d %H:%M:%S:%f")
+        print("end::" + timeNow)
 
         return Response(data=ResponseValue, status=ResponseStatus)
     

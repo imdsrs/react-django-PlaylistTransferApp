@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 import time
 import json
@@ -34,7 +36,8 @@ def getDeezerISRCValues(SpotifyISRCValue):
     ResponseValue = {'Response': 'Transfer Complete'}
     while ISRCCounter < len(SpotifyISRCValue):
         if (ISRCCounter % 45 == 0 and ISRCCounter > 0):
-            print("sleeping for 5 seconds")
+            timeNow = datetime.today().strftime("%Y-%m-%d %H:%M:%S:%f")
+            print("sleeping for 5 seconds at " + timeNow)
             time.sleep(5)
         # print(SpotifyISRCValue[ISRCCounter])
         # print(DeezerURLISRCFetch+SpotifyISRCValue[ISRCCounter])
