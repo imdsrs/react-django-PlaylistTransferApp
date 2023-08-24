@@ -11,8 +11,8 @@ import time
 from datetime import datetime
 
 #use this library to match all things involving Youtube Music 
-from difflib import SequenceMatcher
-from fuzzywuzzy import fuzz
+# from difflib import SequenceMatcher
+# from fuzzywuzzy import fuzz
 
 @api_view(["GET"])
 def getDataFromSpotify(request, destinationValue, playlistId, accessTokenSpotify, accessTokenDestination):    
