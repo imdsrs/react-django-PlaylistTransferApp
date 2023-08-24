@@ -86,7 +86,7 @@ def getSpotifyTrackArtistValues(SpotifyResponse):
 
 def getYoutubeMusicVideoIDs(SpotifyTrackArtistValues, YoutubeMusicHeaders):
     YoutubeMusicVideoIDsList = []
-    YoutubeMusicURLToFetchVideoIDs = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&key=515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com&q="
+    YoutubeMusicURLToFetchVideoIDs = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&type=video&key=515720033979-c374rl8jubtear7c8g3jel8gg2965vib.apps.googleusercontent.com&q="
     YoutubeMusicURLToFetchCounter = 0
     ResponseStatus = status.HTTP_200_OK
     ResponseValue = {'Response': 'Transfer Complete'}
@@ -96,13 +96,15 @@ def getYoutubeMusicVideoIDs(SpotifyTrackArtistValues, YoutubeMusicHeaders):
         YoutubeMusicVideoIDsResponse = requests.request(
             "GET", YoutubeMusicURLToFetchVideoIDs+SpotifyTrackArtistValues[YoutubeMusicURLToFetchCounter], headers=YoutubeMusicHeaders)
         # print(YoutubeMusicVideoIDsResponse.json())
-        if YoutubeMusicVideoIDsResponse.status_code == 200:
+        if YoutubeMusicVideoIDsResponse.status_code == 200 and YoutubeMusicVideoIDsResponse.json()['items'][0]['id']['videoId']:
+            print(YoutubeMusicVideoIDsResponse.json())
             YoutubeMusicVideoIDsList.append(YoutubeMusicVideoIDsResponse.json()['items'][0]['id']['videoId'])
         else:
             ResponseValue = YoutubeMusicVideoIDsResponse.json()['error']
             ResponseStatus = status.HTTP_207_MULTI_STATUS
         YoutubeMusicURLToFetchCounter += 1
-    # print("getting getYoutubeMusicVideoIDs")
+    print("YoutubeMusicVideoIDsList::")
+    print(YoutubeMusicVideoIDsList)
     return YoutubeMusicVideoIDsList, ResponseValue, ResponseStatus
 
 
