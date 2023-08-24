@@ -37,6 +37,7 @@ const TransferFromSpotify = () => {
             })
             .catch((error) => {
                 console.log(error);
+                setResponseFromBE(error);
             });
     };
 
@@ -52,7 +53,7 @@ const TransferFromSpotify = () => {
         <div>
             {/* {playlistId}
             {destinationValue} */}
-            {/* {console.log("responseFromBE:", responseFromBE)} */}
+            {console.log("responseFromBE:", responseFromBE)}
             {/* {console.log("isLoading:", isLoading)} */}
             {isLoading ? (
                 <TransferLoading />
@@ -76,16 +77,21 @@ const TransferFromSpotify = () => {
                     </div>
                     <PartialTransferComplete />
                 </div>
-            ) : (
-                responseFromBE.data && (
-                    <div>
-                        <div className="text-gray-400 bg-gray-900 body-font text-center px-10 py-5 text-4xl w-full">
-                            {responseFromBE.data.CurrentSuccessfulTransfers} of{" "}
-                            {responseFromBE.data.TotalSongs} Songs Transfered
-                        </div>
-                        <TransferError />
+            ) : responseFromBE.data ? (
+                <div>
+                    <div className="text-gray-400 bg-gray-900 body-font text-center px-10 py-5 text-4xl w-full">
+                        {responseFromBE.data.CurrentSuccessfulTransfers} of{" "}
+                        {responseFromBE.data.TotalSongs} Songs Transfered
                     </div>
-                )
+                    <TransferError />
+                </div>
+            ) : (
+                <div>
+                    <div className="text-gray-400 bg-gray-900 body-font text-center px-10 py-5 text-4xl w-full">
+                        Please try again later.
+                    </div>
+                    <TransferError />
+                </div>
             )}
         </div>
     );
