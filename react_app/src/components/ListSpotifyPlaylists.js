@@ -40,20 +40,21 @@ const ListSpotifyPlaylists = () => {
         <div class="text-gray-400 bg-gray-900 body-font">
             {/* <h1>{destinationValue}</h1> */}
             {/* {console.log("profile::", profile)} */}
-            {profile.display_name &&
-                profile.images &&
-                profile.images[0].url && (
-                    <div className="flex justify-end items-end text-sm">
-                        Spotify logged in as&nbsp;
-                        <br />
-                        {profile.display_name}&nbsp;
-                        <img
-                            src={profile.images[0].url}
-                            alt="profile"
-                            className="rounded-full h-10 w-10"
-                        />
-                    </div>
-                )}
+            {profile.display_name && (
+                <div className="flex justify-end items-end text-sm">
+                    Spotify logged in as&nbsp;
+                    <br />
+                    {profile.images &&
+                        profile.images.length > 0 &&
+                        profile.images[0].url && (
+                            <img
+                                src={profile.images[0].url}
+                                alt="profile"
+                                className="rounded-3xl"
+                            />
+                        )}
+                </div>
+            )}
 
             {/* {console.log("playlists", playlists)} */}
             {playlists.items && (
