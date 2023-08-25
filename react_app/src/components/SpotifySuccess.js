@@ -72,20 +72,22 @@ const SpotifySuccess = () => {
                     Logged in Succesfully to Spotify
                 </div>
             )}
-            {profile.display_name &&
-                profile.images &&
-                profile.images[0].url && (
-                    <div className="flex justify-center items-center m-auto py-8">
-                        Spotify logged in as&nbsp;
-                        <br />
-                        {profile.display_name}&nbsp;
-                        <img
-                            src={profile.images[0].url}
-                            alt="profile"
-                            className="rounded-3xl"
-                        />
-                    </div>
-                )}
+            {profile.display_name && (
+                <div className="flex justify-center items-center m-auto py-8">
+                    Spotify logged in as&nbsp;
+                    <br />
+                    {profile.display_name}&nbsp;
+                    {profile.images &&
+                        profile.images.length > 0 &&
+                        profile.images[0].url && (
+                            <img
+                                src={profile.images[0].url}
+                                alt="profile"
+                                className="rounded-3xl"
+                            />
+                        )}
+                </div>
+            )}
         </div>
     );
 };
